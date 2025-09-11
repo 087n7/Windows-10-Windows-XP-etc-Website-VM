@@ -72,61 +72,64 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: var(--taskbar-height);
+            height: 56px; /* Increased height */
             background: var(--taskbar-bg);
             display: flex;
             align-items: center;
-            padding: 0 16px;
+            padding: 0 8px;
             box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.5);
             z-index: 100;
         }
 
         .taskbar-start, .taskbar-item, .taskbar-time, .taskbar-notification {
             cursor: pointer;
+            display: flex; /* Added for alignment */
+            align-items: center; /* Added for alignment */
+            justify-content: center; /* Added for alignment */
+            padding: 0 10px; /* Adjusted padding */
+            height: 100%; /* Make items fill the taskbar height */
         }
-
+        
         .taskbar-start img {
-            width: 32px;
+            width: 36px; /* Slightly larger Start icon */
         }
         
         .taskbar-search {
-            margin-left: 18px;
+            margin-left: 10px;
             display: flex;
             align-items: center;
-            background: #252525;
+            background: #2c2c2c; /* Slightly different shade */
             border-radius: 4px;
-            padding: 6px 12px;
+            padding: 8px 16px; /* Increased padding */
+            min-width: 250px; /* Made search bar wider */
+            height: 38px;
         }
         
         .taskbar-search i {
             color: #999;
-            margin-right: 8px;
+            margin-right: 10px;
         }
         
         .taskbar-search input {
             background: transparent;
             color: var(--text-color-light);
             border: none;
-            width: 180px;
-            font-size: 15px;
+            width: 100%;
+            font-size: 16px; /* Slightly larger font */
             outline: none;
         }
 
         .taskbar-icons {
             display: flex;
             align-items: center;
-            margin-left: 12px;
+            margin-left: 10px;
         }
 
         .taskbar-icons .taskbar-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 50px; /* Larger icon containers */
+            height: 50px;
             transition: background 0.2s;
             border-bottom: 2px solid transparent;
-            margin: 0 4px;
         }
         
         .taskbar-icons .taskbar-item:hover {
@@ -138,7 +141,7 @@
         }
         
         .taskbar-icons img {
-            width: 28px;
+            width: 32px; /* Slightly larger icons */
         }
         
         .taskbar-right {
@@ -146,13 +149,27 @@
             align-items: center;
             margin-left: auto;
             gap: 12px;
-            font-size: 14px;
+            font-size: 15px; /* Slightly larger font */
             color: var(--text-color-light);
-            padding-right: 6px;
+            padding-right: 12px;
         }
         
+        .taskbar-notification {
+            height: 100%;
+            padding: 0 10px;
+        }
+
         .taskbar-notification i {
-            font-size: 18px;
+            font-size: 20px; /* Larger bell icon */
+        }
+        
+        .taskbar-time {
+            padding: 0 10px;
+            line-height: 1.2;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         /* --- Start Menu --- */
@@ -160,8 +177,9 @@
             position: fixed;
             bottom: calc(var(--taskbar-height) + 8px);
             left: 12px;
-            width: var(--start-menu-width);
-            background: var(--start-menu-bg);
+            width: 320px;
+            height: 560px; /* Made menu taller to resemble Windows 10 */
+            background: rgba(45, 45, 45, 0.98); /* Adjusted background for contrast */
             border-radius: 8px;
             box-shadow: 0 2px 16px rgba(0, 0, 0, 0.7);
             color: var(--text-color-light);
@@ -170,12 +188,12 @@
             z-index: 1000;
             animation: fadeIn 0.2s;
         }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
+        
         .start-menu-header {
             padding: 16px;
             display: flex;
@@ -190,8 +208,10 @@
         
         .start-menu-apps {
             padding: 12px 0;
+            flex-grow: 1; /* Allows apps section to expand */
+            overflow-y: auto; /* Adds scrollbar if needed */
         }
-
+        
         .start-menu-app {
             display: flex;
             align-items: center;
@@ -199,16 +219,16 @@
             cursor: pointer;
             transition: background 0.15s;
         }
-
+        
         .start-menu-app:hover {
             background: var(--hover-bg);
         }
-
+        
         .start-menu-app img {
             width: 28px;
             margin-right: 10px;
         }
-
+        
         .start-menu-power {
             padding: 12px 18px;
             display: flex;
@@ -221,7 +241,7 @@
         .start-menu-power:hover {
             background: var(--hover-bg);
         }
-
+        
         .start-menu-power i {
             font-size: 22px;
             margin-right: 8px;
@@ -325,6 +345,9 @@
             <div class="taskbar-item">
                 <img src="https://img.icons8.com/color/48/000000/chrome.png" alt="Chrome">
             </div>
+            <div class="taskbar-item">
+                <img src="https://img.icons8.com/color/48/000000/microsoft-edge.png" alt="Edge">
+            </div>
         </div>
         <div class="taskbar-right">
             <div class="taskbar-notification">
@@ -347,6 +370,10 @@
             <div class="start-menu-app">
                 <img src="https://img.icons8.com/color/48/000000/settings.png">
                 <span>Settings</span>
+            </div>
+            <div class="start-menu-app">
+                <img src="https://img.icons8.com/color/48/000000/paint.png">
+                <span>Paint</span>
             </div>
         </div>
         <div class="start-menu-power">
@@ -394,7 +421,8 @@
         function updateTime() {
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            taskbarTime.textContent = timeStr;
+            const dateStr = now.toLocaleDateString();
+            taskbarTime.innerHTML = `<span>${timeStr}</span><span>${dateStr}</span>`;
         }
         updateTime();
         setInterval(updateTime, 1000);
@@ -417,12 +445,13 @@
             let target = e.target;
             const windowTarget = target.closest('[data-window-target]');
             if (windowTarget) {
-                const windowId = windowTarget.dataset.windowTarget;
+                const windowId = windowTarget.dataset.window-target;
                 const windowEl = document.querySelector(windowId);
                 if (windowEl) {
                     windows.forEach(win => win.classList.remove('active'));
                     windowEl.style.display = 'flex';
                     windowEl.classList.add('active');
+                    startMenu.style.display = 'none'; // Close start menu when an app is opened
                 }
             } else if (target.closest('.close-btn')) {
                 const windowEl = target.closest('.window');
