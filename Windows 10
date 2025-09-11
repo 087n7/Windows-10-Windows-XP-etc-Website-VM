@@ -9,7 +9,6 @@
         :root {
             --taskbar-height: 48px;
             --taskbar-bg: rgba(31, 31, 31, 0.95);
-            --start-menu-width: 320px;
             --start-menu-bg: rgba(34, 34, 34, 0.97);
             --window-bg: #f3f3f3;
             --window-border: #cfcfcf;
@@ -23,8 +22,6 @@
 
         body {
             margin: 0;
-            background: url('https://wallpapercave.com/wp/wp2552026.jpg') no-repeat center center fixed;
-            background-size: cover;
             font-family: var(--font-family);
             height: 100vh;
             overflow: hidden;
@@ -32,28 +29,126 @@
             cursor: default;
         }
 
-        /* --- Desktop --- */
-        .desktop {
-            height: calc(100vh - var(--taskbar-height));
-            padding: 30px 20px;
+        /* Login Screen Styles */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows%2010.png?raw=true') no-repeat center center fixed;
+            background-size: cover;
+            flex-direction: column;
+            color: var(--text-color-light);
+            z-index: 2000;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        #login-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .login-box {
             display: flex;
             flex-direction: column;
-            flex-wrap: wrap;
-            align-content: flex-start;
+            align-items: center;
             gap: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            border-radius: 0px;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-box h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        .login-box .user-icon {
+            font-size: 80px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            padding: 10px;
+        }
+
+        .login-box .input-group {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0px;
+            padding: 5px 15px;
+        }
+
+        .login-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 1em;
+            padding: 8px;
+            width: 200px;
+        }
+        
+        .login-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .login-box button {
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            border-radius: 0px;
+            padding: 10px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-box button:hover {
+            background: #005a9e;
+        }
+
+        /* Desktop Styles */
+        .desktop-container {
+            display: none;
+            height: 100vh;
+            background: url('https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows%2010.png?raw=true') no-repeat center center fixed;
+            background-size: cover;
             position: relative;
             z-index: 1;
         }
 
+        .desktop {
+            height: calc(100vh - var(--taskbar-height));
+            padding: 30px 20px;
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(auto-fill, 100px);
+            align-content: flex-start;
+            gap: 20px;
+            position: relative;
+        }
+
         .icon {
             width: 80px;
+            height: 90px;
             text-align: center;
             color: var(--text-color-light);
             cursor: pointer;
             text-shadow: 1px 1px 2px #000;
             transition: background 0.2s;
-            border-radius: 4px;
+            border-radius: 0px;
             padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .icon:hover {
@@ -65,14 +160,14 @@
             margin-bottom: 5px;
             filter: drop-shadow(1px 1px 2px #000);
         }
-
-        /* --- Taskbar --- */
+        
+        /* Taskbar */
         .taskbar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 56px; /* Increased height */
+            height: 56px;
             background: var(--taskbar-bg);
             display: flex;
             align-items: center;
@@ -81,41 +176,46 @@
             z-index: 100;
         }
 
-        .taskbar-start, .taskbar-item, .taskbar-time, .taskbar-notification {
+        .taskbar-start {
             cursor: pointer;
-            display: flex; /* Added for alignment */
-            align-items: center; /* Added for alignment */
-            justify-content: center; /* Added for alignment */
-            padding: 0 10px; /* Adjusted padding */
-            height: 100%; /* Make items fill the taskbar height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0 10px;
         }
         
         .taskbar-start img {
-            width: 36px; /* Slightly larger Start icon */
+            width: 40px;
+            transition: transform 0.2s;
         }
         
+        .taskbar-start:hover img {
+            transform: scale(1.05);
+        }
+
         .taskbar-search {
             margin-left: 10px;
             display: flex;
             align-items: center;
-            background: #ffffff; /* Changed to white */
-            border-radius: 4px;
-            padding: 8px 16px; /* Increased padding */
-            min-width: 250px; /* Made search bar wider */
+            background: #ffffff;
+            border-radius: 0px;
+            padding: 8px 16px;
+            min-width: 250px;
             height: 38px;
         }
         
         .taskbar-search i {
-            color: #555; /* Adjusted icon color for contrast on white background */
+            color: #555;
             margin-right: 10px;
         }
         
         .taskbar-search input {
             background: transparent;
-            color: #333; /* Adjusted text color for contrast on white background */
+            color: #333;
             border: none;
             width: 100%;
-            font-size: 16px; /* Slightly larger font */
+            font-size: 16px;
             outline: none;
         }
 
@@ -126,10 +226,14 @@
         }
 
         .taskbar-icons .taskbar-item {
-            width: 50px; /* Larger icon containers */
+            width: 50px;
             height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: background 0.2s;
             border-bottom: 2px solid transparent;
+            cursor: pointer;
         }
         
         .taskbar-icons .taskbar-item:hover {
@@ -141,7 +245,7 @@
         }
         
         .taskbar-icons img {
-            width: 32px; /* Slightly larger icons */
+            width: 32px;
         }
         
         .taskbar-right {
@@ -149,7 +253,7 @@
             align-items: center;
             margin-left: auto;
             gap: 12px;
-            font-size: 15px; /* Slightly larger font */
+            font-size: 15px;
             color: var(--text-color-light);
             padding-right: 12px;
         }
@@ -157,10 +261,11 @@
         .taskbar-notification {
             height: 100%;
             padding: 0 10px;
+            cursor: pointer;
         }
 
         .taskbar-notification i {
-            font-size: 20px; /* Larger bell icon */
+            font-size: 20px;
         }
         
         .taskbar-time {
@@ -172,15 +277,15 @@
             justify-content: center;
         }
 
-        /* --- Start Menu --- */
+        /* Start Menu */
         .start-menu {
             position: fixed;
             bottom: calc(var(--taskbar-height) + 8px);
             left: 12px;
             width: 320px;
-            height: 560px; /* Made menu taller to resemble Windows 10 */
-            background: rgba(45, 45, 45, 0.98); /* Adjusted background for contrast */
-            border-radius: 8px;
+            height: 560px;
+            background: rgba(45, 45, 45, 0.98);
+            border-radius: 0px;
             box-shadow: 0 2px 16px rgba(0, 0, 0, 0.7);
             color: var(--text-color-light);
             display: none;
@@ -208,8 +313,8 @@
         
         .start-menu-apps {
             padding: 12px 0;
-            flex-grow: 1; /* Allows apps section to expand */
-            overflow-y: auto; /* Adds scrollbar if needed */
+            flex-grow: 1;
+            overflow-y: auto;
         }
         
         .start-menu-app {
@@ -247,20 +352,20 @@
             margin-right: 8px;
         }
 
-        /* --- Window --- */
+        /* Window */
         .window {
             position: absolute;
-            top: 120px;
-            left: 200px;
-            width: 340px;
-            min-height: 200px;
+            top: 10%;
+            left: 20%;
+            width: 500px;
+            height: 400px;
             background: var(--window-bg);
-            border-radius: 6px;
+            border-radius: 0px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--window-border);
             font-family: var(--font-family);
             z-index: 999;
-            display: none; /* Initially hidden */
+            display: none;
             flex-direction: column;
             overflow: hidden;
             resize: both;
@@ -276,8 +381,8 @@
             background: var(--window-title-bar-bg);
             color: var(--text-color-light);
             padding: 8px 12px;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -299,7 +404,7 @@
             width: 32px;
             height: 24px;
             transition: background 0.2s;
-            border-radius: 2px;
+            border-radius: 0px;
         }
         
         .window-title-buttons button:hover {
@@ -319,169 +424,277 @@
     </style>
 </head>
 <body>
-    <div class="desktop" id="desktop">
-        <div class="icon" id="documents-icon" data-window-target="#documents-window">
-            <img src="https://img.icons8.com/windows/96/000000/folder-invoices.png" alt="Documents">
-            <span>Documents</span>
-        </div>
-        <div class="icon" id="file-explorer-icon" data-window-target="#file-explorer-window">
-            <img src="https://img.icons8.com/color/96/000000/file-explorer.png" alt="File Explorer">
-            <span>File Explorer</span>
+    <div id="login-screen">
+        <div class="login-box">
+            <i class="fas fa-user-circle user-icon"></i>
+            <h1>User</h1>
+            <div class="input-group">
+                <input type="password" id="password-input" placeholder="Password">
+                <button id="login-btn"><i class="fas fa-arrow-right"></i></button>
+            </div>
+            <p id="login-message" style="color: #e81123; display: none;">Incorrect password. Try "password".</p>
         </div>
     </div>
 
-    <div class="taskbar">
-        <div class="taskbar-start" id="start-button">
-            <img src="https://img.icons8.com/color/48/000000/windows-10.png" alt="Start">
-        </div>
-        <div class="taskbar-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Type here to search...">
-        </div>
-        <div class="taskbar-icons">
-            <div class="taskbar-item active" data-window-target="#file-explorer-window">
-                <img src="https://img.icons8.com/color/48/000000/file-explorer.png" alt="File Explorer">
+    <div class="desktop-container" id="desktop-container">
+        <div class="desktop" id="desktop">
+            <div class="icon" id="documents-icon" data-window-target="#documents-window">
+                <img src="https://img.icons8.com/windows/96/000000/folder-invoices.png" alt="Documents">
+                <span>Documents</span>
             </div>
-            <div class="taskbar-item">
-                <img src="https://img.icons8.com/color/48/000000/chrome.png" alt="Chrome">
-            </div>
-            <div class="taskbar-item">
-                <img src="https://img.icons8.com/color/48/000000/microsoft-edge.png" alt="Edge">
-            </div>
-        </div>
-        <div class="taskbar-right">
-            <div class="taskbar-notification">
-                <i class="fa-regular fa-bell"></i>
-            </div>
-            <div class="taskbar-time" id="taskbarTime"></div>
-        </div>
-    </div>
-
-    <div class="start-menu" id="start-menu">
-        <div class="start-menu-header">
-            <img src="https://img.icons8.com/color/48/000000/user.png" alt="User">
-            <span>John Doe</span>
-        </div>
-        <div class="start-menu-apps">
-            <div class="start-menu-app" data-window-target="#file-explorer-window">
-                <img src="https://img.icons8.com/color/48/000000/file-explorer.png">
+            <div class="icon" id="file-explorer-icon" data-window-target="#file-explorer-window">
+                <img src="https://img.icons8.com/color/96/000000/file-explorer.png" alt="File Explorer">
                 <span>File Explorer</span>
             </div>
-            <div class="start-menu-app">
-                <img src="https://img.icons8.com/color/48/000000/settings.png">
+        </div>
+
+        <div class="taskbar">
+            <div class="taskbar-start" id="start-button">
+                <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Start">
+            </div>
+            <div class="taskbar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Type here to search...">
+            </div>
+            <div class="taskbar-icons">
+                <div class="taskbar-item" data-window-target="#file-explorer-window">
+                    <img src="https://img.icons8.com/color/48/000000/file-explorer.png" alt="File Explorer">
+                </div>
+                <div class="taskbar-item">
+                    <img src="https://img.icons8.com/color/48/000000/chrome.png" alt="Chrome">
+                </div>
+                <div class="taskbar-item">
+                    <img src="https://img.icons8.com/color/48/000000/microsoft-edge.png" alt="Edge">
+                </div>
+            </div>
+            <div class="taskbar-right">
+                <div class="taskbar-notification">
+                    <i class="fa-regular fa-bell"></i>
+                </div>
+                <div class="taskbar-time" id="taskbarTime"></div>
+            </div>
+        </div>
+
+        <div class="start-menu" id="start-menu">
+            <div class="start-menu-header">
+                <img src="https://img.icons8.com/color/48/000000/user.png" alt="User">
+                <span>User</span>
+            </div>
+            <div class="start-menu-apps">
+                <div class="start-menu-app" data-window-target="#file-explorer-window">
+                    <img src="https://img.icons8.com/color/48/000000/file-explorer.png">
+                    <span>File Explorer</span>
+                </div>
+                <div class="start-menu-app" data-window-target="#settings-window">
+                    <img src="https://img.icons8.com/color/48/000000/settings.png">
+                    <span>Settings</span>
+                </div>
+                <div class="start-menu-app">
+                    <img src="https://img.icons8.com/color/48/000000/paint.png">
+                    <span>Paint</span>
+                </div>
+            </div>
+            <div class="start-menu-power" id="shutdown-button">
+                <i class="fa-solid fa-power-off"></i>
+                <span>Shut Down</span>
+            </div>
+        </div>
+
+        <div class="window" id="file-explorer-window">
+            <div class="window-title-bar">
+                <span>File Explorer</span>
+                <div class="window-title-buttons">
+                    <button class="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                    <button class="maximize-btn"><i class="fas fa-window-maximize"></i></button>
+                    <button class="close-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <p>This is the File Explorer window.</p>
+            </div>
+        </div>
+
+        <div class="window" id="documents-window">
+            <div class="window-title-bar">
+                <span>Documents</span>
+                <div class="window-title-buttons">
+                    <button class="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                    <button class="maximize-btn"><i class="fas fa-window-maximize"></i></button>
+                    <button class="close-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="window-content">
+                <p>Welcome to your documents!</p>
+            </div>
+        </div>
+
+        <div class="window" id="settings-window">
+            <div class="window-title-bar">
                 <span>Settings</span>
+                <div class="window-title-buttons">
+                    <button class="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                    <button class="maximize-btn"><i class="fas fa-window-maximize"></i></button>
+                    <button class="close-btn"><i class="fas fa-times"></i></button>
+                </div>
             </div>
-            <div class="start-menu-app">
-                <img src="https://img.icons8.com/color/48/000000/paint.png">
-                <span>Paint</span>
+            <div class="window-content">
+                <p>This is the Settings window. It will be more realistic in the next iteration!</p>
             </div>
-        </div>
-        <div class="start-menu-power">
-            <i class="fa-solid fa-power-off"></i>
-            <span>Power</span>
-        </div>
-    </div>
-
-    <div class="window" id="file-explorer-window">
-        <div class="window-title-bar">
-            <span>File Explorer</span>
-            <div class="window-title-buttons">
-                <button class="minimize-btn">_</button>
-                <button class="maximize-btn">□</button>
-                <button class="close-btn">×</button>
-            </div>
-        </div>
-        <div class="window-content">
-            <p>This is a sample window!</p>
-        </div>
-    </div>
-
-    <div class="window" id="documents-window">
-        <div class="window-title-bar">
-            <span>Documents</span>
-            <div class="window-title-buttons">
-                <button class="minimize-btn">_</button>
-                <button class="maximize-btn">□</button>
-                <button class="close-btn">×</button>
-            </div>
-        </div>
-        <div class="window-content">
-            <p>Welcome to your documents!</p>
         </div>
     </div>
     
     <script>
-        const desktop = document.getElementById('desktop');
-        const startMenu = document.getElementById('start-menu');
-        const startButton = document.getElementById('start-button');
-        const windows = document.querySelectorAll('.window');
-        const taskbarTime = document.getElementById('taskbarTime');
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginScreen = document.getElementById('login-screen');
+            const loginBtn = document.getElementById('login-btn');
+            const passwordInput = document.getElementById('password-input');
+            const loginMessage = document.getElementById('login-message');
+            const desktopContainer = document.getElementById('desktop-container');
+            const desktop = document.getElementById('desktop');
+            const startMenu = document.getElementById('start-menu');
+            const startButton = document.getElementById('start-button');
+            const windows = document.querySelectorAll('.window');
+            const taskbarTime = document.getElementById('taskbarTime');
+            const shutdownButton = document.getElementById('shutdown-button');
+            let zIndexCounter = 2000;
 
-        // Update time on taskbar
-        function updateTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const dateStr = now.toLocaleDateString();
-            taskbarTime.innerHTML = `<span>${timeStr}</span><span>${dateStr}</span>`;
-        }
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        // Toggle Start Menu
-        startButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            startMenu.style.display = startMenu.style.display === 'flex' ? 'none' : 'flex';
-        });
-
-        // Hide Start Menu on outside click
-        document.addEventListener('click', (e) => {
-            if (startMenu.style.display === 'flex' && !startMenu.contains(e.target) && !startButton.contains(e.target)) {
-                startMenu.style.display = 'none';
-            }
-        });
-
-        // Window Management
-        document.addEventListener('click', (e) => {
-            let target = e.target;
-            const windowTarget = target.closest('[data-window-target]');
-            if (windowTarget) {
-                const windowId = windowTarget.dataset.windowTarget;
-                const windowEl = document.querySelector(windowId);
-                if (windowEl) {
-                    windows.forEach(win => win.classList.remove('active'));
-                    windowEl.style.display = 'flex';
-                    windowEl.classList.add('active');
-                    startMenu.style.display = 'none'; // Close start menu when an app is opened
+            // --- Login Functionality ---
+            const handleLogin = () => {
+                if (passwordInput.value === 'password') {
+                    loginScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        loginScreen.style.display = 'none';
+                        desktopContainer.style.display = 'block';
+                    }, 500);
+                    loginMessage.style.display = 'none';
+                } else {
+                    loginMessage.style.display = 'block';
                 }
-            } else if (target.closest('.close-btn')) {
-                const windowEl = target.closest('.window');
-                windowEl.style.display = 'none';
-            } else if (target.closest('.minimize-btn')) {
-                const windowEl = target.closest('.window');
-                windowEl.style.display = 'none';
+            };
+            
+            loginBtn.addEventListener('click', handleLogin);
+            passwordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+
+            // --- Time and Date ---
+            function updateTime() {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const dateStr = now.toLocaleDateString();
+                taskbarTime.innerHTML = `<span>${timeStr}</span><span>${dateStr}</span>`;
             }
-        });
-        
-        // Window Dragging and Z-index
-        let activeWindow = null;
-        desktop.addEventListener('mousedown', (e) => {
-            const titleBar = e.target.closest('.window-title-bar');
-            if (!titleBar) return;
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // --- Start Menu ---
+            startButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startMenu.style.display = startMenu.style.display === 'flex' ? 'none' : 'flex';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (startMenu.style.display === 'flex' && !startMenu.contains(e.target) && !startButton.contains(e.target)) {
+                    startMenu.style.display = 'none';
+                }
+            });
+
+            // --- Window Management ---
+            document.addEventListener('click', (e) => {
+                const windowTarget = e.target.closest('[data-window-target]');
+                if (windowTarget) {
+                    const windowId = windowTarget.dataset.window-target;
+                    const windowEl = document.querySelector(windowId);
+                    if (windowEl) {
+                        windows.forEach(win => {
+                            win.classList.remove('active');
+                            win.style.zIndex = zIndexCounter - 1;
+                        });
+                        windowEl.style.display = 'flex';
+                        windowEl.classList.add('active');
+                        windowEl.style.zIndex = zIndexCounter++;
+                        startMenu.style.display = 'none';
+                    }
+                    return;
+                }
+
+                const closeBtn = e.target.closest('.close-btn');
+                const minimizeBtn = e.target.closest('.minimize-btn');
+                const maximizeBtn = e.target.closest('.maximize-btn');
+                
+                if (closeBtn) {
+                    const windowEl = closeBtn.closest('.window');
+                    windowEl.style.display = 'none';
+                } else if (minimizeBtn) {
+                    const windowEl = minimizeBtn.closest('.window');
+                    windowEl.style.display = 'none';
+                } else if (maximizeBtn) {
+                    const windowEl = maximizeBtn.closest('.window');
+                    windowEl.classList.toggle('maximized');
+                    if(windowEl.classList.contains('maximized')) {
+                         windowEl.style.top = '0';
+                         windowEl.style.left = '0';
+                         windowEl.style.width = '100vw';
+                         windowEl.style.height = 'calc(100vh - 56px)';
+                         windowEl.style.transform = 'none';
+                    } else {
+                        windowEl.style.top = '10%';
+                        windowEl.style.left = '20%';
+                        windowEl.style.width = '500px';
+                        windowEl.style.height = '400px';
+                    }
+                }
+            });
             
-            activeWindow = titleBar.closest('.window');
-            windows.forEach(win => win.classList.remove('active'));
-            activeWindow.classList.add('active');
+            // --- Window Dragging and Z-index ---
+            let activeWindow = null;
+            let initialMouseX, initialMouseY, initialWindowX, initialWindowY;
             
-            const offsetX = e.clientX - activeWindow.offsetLeft;
-            const offsetY = e.clientY - activeWindow.offsetTop;
+            desktop.addEventListener('mousedown', (e) => {
+                const titleBar = e.target.closest('.window-title-bar');
+                if (!titleBar) {
+                    // Clicks on windows but not title bar still brings them to front
+                    const windowClicked = e.target.closest('.window');
+                    if (windowClicked) {
+                        windows.forEach(win => win.classList.remove('active'));
+                        windowClicked.classList.add('active');
+                        windowClicked.style.zIndex = zIndexCounter++;
+                    }
+                    return;
+                }
+                
+                activeWindow = titleBar.closest('.window');
+                
+                windows.forEach(win => win.classList.remove('active'));
+                activeWindow.classList.add('active');
+                activeWindow.style.zIndex = zIndexCounter++;
+                
+                initialMouseX = e.clientX;
+                initialMouseY = e.clientY;
+                initialWindowX = activeWindow.offsetLeft;
+                initialWindowY = activeWindow.offsetTop;
+                
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
             
             function onMouseMove(e) {
-                let x = e.clientX - offsetX;
-                let y = e.clientY - offsetY;
-                x = Math.max(0, Math.min(window.innerWidth - activeWindow.offsetWidth, x));
-                y = Math.max(0, Math.min(window.innerHeight - activeWindow.offsetHeight - 48, y));
-                activeWindow.style.left = `${x}px`;
-                activeWindow.style.top = `${y}px`;
+                if (!activeWindow || activeWindow.classList.contains('maximized')) return;
+                
+                let dx = e.clientX - initialMouseX;
+                let dy = e.clientY - initialMouseY;
+                
+                let newX = initialWindowX + dx;
+                let newY = initialWindowY + dy;
+                
+                // Keep window within desktop bounds
+                newX = Math.max(0, Math.min(window.innerWidth - activeWindow.offsetWidth, newX));
+                newY = Math.max(0, Math.min(window.innerHeight - activeWindow.offsetHeight - 56, newY)); // 56px for taskbar
+                
+                activeWindow.style.left = `${newX}px`;
+                activeWindow.style.top = `${newY}px`;
             }
             
             function onMouseUp() {
@@ -489,9 +702,14 @@
                 document.removeEventListener('mouseup', onMouseUp);
                 activeWindow = null;
             }
-            
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
+
+            // --- Shutdown button ---
+            shutdownButton.addEventListener('click', () => {
+                const result = confirm("Are you sure you want to shut down?");
+                if (result) {
+                    window.location.reload(); // A simple way to "shut down"
+                }
+            });
         });
     </script>
 </body>
