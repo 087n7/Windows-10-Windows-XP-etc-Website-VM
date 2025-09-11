@@ -98,7 +98,7 @@
             margin-left: 10px;
             display: flex;
             align-items: center;
-            background: #2c2c2c; /* Slightly different shade */
+            background: #ffffff; /* Changed to white */
             border-radius: 4px;
             padding: 8px 16px; /* Increased padding */
             min-width: 250px; /* Made search bar wider */
@@ -106,13 +106,13 @@
         }
         
         .taskbar-search i {
-            color: #999;
+            color: #555; /* Adjusted icon color for contrast on white background */
             margin-right: 10px;
         }
         
         .taskbar-search input {
             background: transparent;
-            color: var(--text-color-light);
+            color: #333; /* Adjusted text color for contrast on white background */
             border: none;
             width: 100%;
             font-size: 16px; /* Slightly larger font */
@@ -445,7 +445,7 @@
             let target = e.target;
             const windowTarget = target.closest('[data-window-target]');
             if (windowTarget) {
-                const windowId = windowTarget.dataset.window-target;
+                const windowId = windowTarget.dataset.windowTarget;
                 const windowEl = document.querySelector(windowId);
                 if (windowEl) {
                     windows.forEach(win => win.classList.remove('active'));
