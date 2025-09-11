@@ -26,7 +26,20 @@
             height: 100vh;
             overflow: hidden;
             user-select: none;
-            cursor: default;
+            cursor: none;
+            position: relative;
+        }
+
+        /* Custom Cursor */
+        #custom-cursor {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M 0 0 L 16 8 L 8 8 L 0 0" fill="white" stroke="black" stroke-width="1.5"/></svg>') no-repeat;
+            background-size: contain;
+            z-index: 5000;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
         }
 
         /* Login Screen Styles */
@@ -45,11 +58,23 @@
             color: var(--text-color-light);
             z-index: 2000;
             transition: opacity 0.5s ease-in-out;
+            animation: pulse 10s infinite alternate;
         }
         
+        @keyframes pulse {
+            0% { background-size: 100% auto; }
+            100% { background-size: 105% auto; }
+        }
+
         #login-screen.fade-out {
             opacity: 0;
             pointer-events: none;
+        }
+        
+        #login-screen.loading {
+            backdrop-filter: blur(15px);
+            background: #000;
+            opacity: 1;
         }
 
         .login-box {
@@ -67,9 +92,9 @@
         .login-box h1 {
             font-size: 2.5em;
             margin: 0;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
-        
+
         .login-box .user-icon {
             font-size: 80px;
             border-radius: 50%;
@@ -94,7 +119,7 @@
             padding: 8px;
             width: 200px;
         }
-        
+
         .login-box input::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
@@ -113,6 +138,29 @@
         .login-box button:hover {
             background: #005a9e;
         }
+        
+        .loading-text {
+            display: none;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        
+        .progress-bar-container {
+            width: 200px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background: #fff;
+            transition: width 3s ease-in-out;
+        }
 
         /* Desktop Styles */
         .desktop-container {
@@ -122,6 +170,7 @@
             background-size: cover;
             position: relative;
             z-index: 1;
+            transition: background 0.5s ease-in-out;
         }
 
         .desktop {
@@ -160,7 +209,7 @@
             margin-bottom: 5px;
             filter: drop-shadow(1px 1px 2px #000);
         }
-        
+
         /* Taskbar */
         .taskbar {
             position: fixed;
@@ -184,12 +233,12 @@
             height: 100%;
             padding: 0 10px;
         }
-        
+
         .taskbar-start img {
             width: 40px;
             transition: transform 0.2s;
         }
-        
+
         .taskbar-start:hover img {
             transform: scale(1.05);
         }
@@ -204,12 +253,12 @@
             min-width: 250px;
             height: 38px;
         }
-        
+
         .taskbar-search i {
             color: #555;
             margin-right: 10px;
         }
-        
+
         .taskbar-search input {
             background: transparent;
             color: #333;
@@ -235,19 +284,19 @@
             border-bottom: 2px solid transparent;
             cursor: pointer;
         }
-        
+
         .taskbar-icons .taskbar-item:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-        
+
         .taskbar-icons .taskbar-item.active {
             border-color: #00a0e2;
         }
-        
+
         .taskbar-icons img {
             width: 32px;
         }
-        
+
         .taskbar-right {
             display: flex;
             align-items: center;
@@ -257,7 +306,7 @@
             color: var(--text-color-light);
             padding-right: 12px;
         }
-        
+
         .taskbar-notification {
             height: 100%;
             padding: 0 10px;
@@ -267,7 +316,7 @@
         .taskbar-notification i {
             font-size: 20px;
         }
-        
+
         .taskbar-time {
             padding: 0 10px;
             line-height: 1.2;
@@ -293,64 +342,144 @@
             z-index: 1000;
             animation: fadeIn 0.2s;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .start-menu-header {
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #444;
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .start-menu-header img {
-            width: 32px;
-            margin-right: 12px;
-        }
-        
-        .start-menu-apps {
-            padding: 12px 0;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-        
-        .start-menu-app {
+        .start-menu-sidebar {
+            width: 48px;
+            background: rgba(30, 30, 30, 0.98);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 8px 18px;
+            padding-top: 10px;
+        }
+
+        .start-menu-sidebar-icon {
+            padding: 10px;
             cursor: pointer;
             transition: background 0.15s;
         }
-        
+
+        .start-menu-sidebar-icon:hover {
+            background: var(--hover-bg);
+        }
+
+        .start-menu-sidebar-icon i {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .start-menu-content {
+            flex-grow: 1;
+            padding: 12px;
+        }
+
+        .start-menu-section {
+            margin-bottom: 20px;
+        }
+
+        .start-menu-section h4 {
+            font-size: 14px;
+            margin: 0;
+            text-transform: uppercase;
+            color: #ccc;
+            padding: 5px 0;
+        }
+
+        .app-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .start-menu-app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: background 0.15s;
+            width: 70px;
+            height: 70px;
+            border-radius: 4px;
+        }
+
         .start-menu-app:hover {
             background: var(--hover-bg);
         }
-        
+
         .start-menu-app img {
-            width: 28px;
-            margin-right: 10px;
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+        }
+
+        .start-menu-app span {
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .start-menu-all-apps {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .start-menu-all-apps .start-menu-app {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            width: 100%;
+            height: auto;
+            padding: 8px 10px;
+        }
+
+        .start-menu-all-apps .start-menu-app span {
+            font-size: 14px;
+            margin-left: 10px;
         }
         
-        .start-menu-power {
-            padding: 12px 18px;
+        .start-menu-power-options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 10px;
+            border-top: 1px solid #444;
+        }
+
+        .start-menu-power-option {
             display: flex;
             align-items: center;
+            padding: 8px;
             cursor: pointer;
-            border-top: 1px solid #444;
             transition: background 0.15s;
+            border-radius: 4px;
         }
-        
-        .start-menu-power:hover {
+
+        .start-menu-power-option:hover {
             background: var(--hover-bg);
         }
-        
-        .start-menu-power i {
-            font-size: 22px;
-            margin-right: 8px;
+
+        .start-menu-power-option i {
+            font-size: 20px;
+            margin-right: 10px;
         }
+
 
         /* Window */
         .window {
@@ -371,12 +500,21 @@
             resize: both;
             min-width: 200px;
             min-height: 150px;
+            transition: transform 0.3s ease-in-out, top 0.3s ease-in-out, left 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
         }
-        
+
         .window.active {
             z-index: 2000;
         }
-        
+
+        .window.maximized {
+            width: 100vw !important;
+            height: calc(100vh - 56px) !important;
+            top: 0 !important;
+            left: 0 !important;
+            border-radius: 0;
+        }
+
         .window-title-bar {
             background: var(--window-title-bar-bg);
             color: var(--text-color-light);
@@ -389,12 +527,12 @@
             cursor: move;
             flex-shrink: 0;
         }
-        
+
         .window-title-buttons {
             display: flex;
             gap: 2px;
         }
-        
+
         .window-title-buttons button {
             background: transparent;
             border: none;
@@ -406,11 +544,11 @@
             transition: background 0.2s;
             border-radius: 0px;
         }
-        
+
         .window-title-buttons button:hover {
             background: rgba(255, 255, 255, 0.15);
         }
-        
+
         .window-title-buttons .close-btn:hover {
             background-color: #e81123;
         }
@@ -420,6 +558,99 @@
             color: var(--text-color-dark);
             flex-grow: 1;
             overflow: auto;
+        }
+
+        /* My Computer Content */
+        .my-computer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 10px;
+        }
+        
+        .my-computer-folder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 80px;
+            text-align: center;
+        }
+        
+        .my-computer-folder img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 5px;
+        }
+
+        .my-computer-folder span {
+            font-size: 14px;
+            color: var(--text-color-dark);
+        }
+
+        /* Shutting Down Screen */
+        #shutdown-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            color: #fff;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .shutdown-content {
+            text-align: center;
+        }
+
+        .loading-dots {
+            margin-top: 10px;
+            font-size: 2em;
+        }
+
+        .loading-dots span {
+            opacity: 0;
+            animation: fade-in-out 1.5s infinite;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: 0s; }
+        .loading-dots span:nth-child(2) { animation-delay: 0.5s; }
+        .loading-dots span:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        #shutdown-screen.visible {
+            opacity: 1;
+        }
+
+        /* Desktop Context Menu */
+        #context-menu {
+            display: none;
+            position: fixed;
+            background: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 4000;
+            padding: 5px 0;
+        }
+
+        .context-menu-item {
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .context-menu-item:hover {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
@@ -434,10 +665,18 @@
             </div>
             <p id="login-message" style="color: #e81123; display: none;">Incorrect password. Try "password".</p>
         </div>
+        <h2 class="loading-text">Welcome</h2>
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
     </div>
 
     <div class="desktop-container" id="desktop-container">
         <div class="desktop" id="desktop">
+            <div class="icon" id="my-computer-icon" data-window-target="#my-computer-window">
+                <img src="https://img.icons8.com/color/96/000000/computer.png" alt="My Computer">
+                <span>My Computer</span>
+            </div>
             <div class="icon" id="documents-icon" data-window-target="#documents-window">
                 <img src="https://img.icons8.com/windows/96/000000/folder-invoices.png" alt="Documents">
                 <span>Documents</span>
@@ -457,11 +696,11 @@
                 <input type="text" placeholder="Type here to search...">
             </div>
             <div class="taskbar-icons">
+                <div class="taskbar-item" data-window-target="#my-computer-window">
+                    <img src="https://img.icons8.com/color/48/000000/computer.png" alt="My Computer">
+                </div>
                 <div class="taskbar-item" data-window-target="#file-explorer-window">
                     <img src="https://img.icons8.com/color/48/000000/file-explorer.png" alt="File Explorer">
-                </div>
-                <div class="taskbar-item">
-                    <img src="https://img.icons8.com/color/48/000000/chrome.png" alt="Chrome">
                 </div>
                 <div class="taskbar-item">
                     <img src="https://img.icons8.com/color/48/000000/microsoft-edge.png" alt="Edge">
@@ -476,27 +715,59 @@
         </div>
 
         <div class="start-menu" id="start-menu">
-            <div class="start-menu-header">
-                <img src="https://img.icons8.com/color/48/000000/user.png" alt="User">
-                <span>User</span>
-            </div>
-            <div class="start-menu-apps">
-                <div class="start-menu-app" data-window-target="#file-explorer-window">
-                    <img src="https://img.icons8.com/color/48/000000/file-explorer.png">
-                    <span>File Explorer</span>
+            <div class="start-menu-content">
+                <div class="start-menu-section">
+                    <h4>Pined Apps</h4>
+                    <div class="app-list">
+                        <div class="start-menu-app" data-window-target="#file-explorer-window">
+                            <img src="https://img.icons8.com/color/48/000000/file-explorer.png" alt="File Explorer">
+                            <span>File Explorer</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#settings-window">
+                            <img src="https://img.icons8.com/color/48/000000/settings.png" alt="Settings">
+                            <span>Settings</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#my-computer-window">
+                            <img src="https://img.icons8.com/color/48/000000/computer.png" alt="My Computer">
+                            <span>My Computer</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="start-menu-app" data-window-target="#settings-window">
-                    <img src="https://img.icons8.com/color/48/000000/settings.png">
-                    <span>Settings</span>
+                <div class="start-menu-section">
+                    <h4>All Apps</h4>
+                    <div class="start-menu-all-apps">
+                        <div class="start-menu-app" data-window-target="#documents-window">
+                            <img src="https://img.icons8.com/windows/48/000000/folder-invoices.png" alt="Documents">
+                            <span>Documents</span>
+                        </div>
+                        <div class="start-menu-app">
+                            <img src="https://img.icons8.com/color/48/000000/paint.png" alt="Paint">
+                            <span>Paint</span>
+                        </div>
+                        <div class="start-menu-app">
+                            <img src="https://img.icons8.com/color/48/000000/calculator.png" alt="Calculator">
+                            <span>Calculator</span>
+                        </div>
+                        <div class="start-menu-app">
+                            <img src="https://img.icons8.com/color/48/000000/notepad.png" alt="Notepad">
+                            <span>Notepad</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="start-menu-app">
-                    <img src="https://img.icons8.com/color/48/000000/paint.png">
-                    <span>Paint</span>
+                <div class="start-menu-power-options">
+                    <div class="start-menu-power-option" id="sleep-button">
+                        <i class="fa-solid fa-moon"></i>
+                        <span>Sleep</span>
+                    </div>
+                    <div class="start-menu-power-option" id="restart-button">
+                        <i class="fa-solid fa-redo-alt"></i>
+                        <span>Restart</span>
+                    </div>
+                    <div class="start-menu-power-option" id="shutdown-button">
+                        <i class="fa-solid fa-power-off"></i>
+                        <span>Shut Down</span>
+                    </div>
                 </div>
-            </div>
-            <div class="start-menu-power" id="shutdown-button">
-                <i class="fa-solid fa-power-off"></i>
-                <span>Shut Down</span>
             </div>
         </div>
 
@@ -541,14 +812,62 @@
                 <p>This is the Settings window. It will be more realistic in the next iteration!</p>
             </div>
         </div>
+
+        <div class="window" id="my-computer-window">
+            <div class="window-title-bar">
+                <span>My Computer</span>
+                <div class="window-title-buttons">
+                    <button class="minimize-btn"><i class="fas fa-window-minimize"></i></button>
+                    <button class="maximize-btn"><i class="fas fa-window-maximize"></i></button>
+                    <button class="close-btn"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="window-content my-computer-content">
+                <div class="my-computer-folder" data-folder="Documents">
+                    <img src="https://img.icons8.com/color/96/000000/folder--v1.png" alt="Documents">
+                    <span>Documents</span>
+                </div>
+                <div class="my-computer-folder" data-folder="Pictures">
+                    <img src="https://img.icons8.com/color/96/000000/picture--v1.png" alt="Pictures">
+                    <span>Pictures</span>
+                </div>
+                <div class="my-computer-folder" data-folder="Music">
+                    <img src="https://img.icons8.com/color/96/000000/music-folder.png" alt="Music">
+                    <span>Music</span>
+                </div>
+                <div class="my-computer-folder" data-folder="Videos">
+                    <img src="https://img.icons8.com/color/96/000000/video-folder.png" alt="Videos">
+                    <span>Videos</span>
+                </div>
+            </div>
+        </div>
     </div>
     
+    <div id="shutdown-screen">
+        <div class="shutdown-content">
+            <h1 class="shutdown-text">Shutting Down</h1>
+            <div class="loading-dots">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="custom-cursor"></div>
+
+    <div id="context-menu">
+        <div class="context-menu-item" id="change-wallpaper-btn">Change Wallpaper</div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loginScreen = document.getElementById('login-screen');
             const loginBtn = document.getElementById('login-btn');
             const passwordInput = document.getElementById('password-input');
             const loginMessage = document.getElementById('login-message');
+            const loginBox = document.querySelector('.login-box');
+            const loadingText = document.querySelector('.loading-text');
+            const progressBarContainer = document.querySelector('.progress-bar-container');
+            const progressBar = document.querySelector('.progress-bar');
             const desktopContainer = document.getElementById('desktop-container');
             const desktop = document.getElementById('desktop');
             const startMenu = document.getElementById('start-menu');
@@ -556,22 +875,68 @@
             const windows = document.querySelectorAll('.window');
             const taskbarTime = document.getElementById('taskbarTime');
             const shutdownButton = document.getElementById('shutdown-button');
+            const restartButton = document.getElementById('restart-button');
+            const sleepButton = document.getElementById('sleep-button');
+            const shutdownScreen = document.getElementById('shutdown-screen');
+            const customCursor = document.getElementById('custom-cursor');
+            const contextMenu = document.getElementById('context-menu');
+            const changeWallpaperBtn = document.getElementById('change-wallpaper-btn');
             let zIndexCounter = 2000;
+
+            const wallpapers = [
+                'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows%2010.png?raw=true',
+                'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-xp-default.png?raw=true',
+                'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-7.png?raw=true'
+            ];
+            let currentWallpaperIndex = 0;
+
+            // --- Custom Cursor ---
+            document.body.style.cursor = 'none';
+            document.addEventListener('mousemove', (e) => {
+                customCursor.style.left = `${e.clientX}px`;
+                customCursor.style.top = `${e.clientY}px`;
+            });
+            
+            // --- Context Menu ---
+            desktop.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                contextMenu.style.display = 'block';
+                contextMenu.style.left = `${e.clientX}px`;
+                contextMenu.style.top = `${e.clientY}px`;
+            });
+
+            document.addEventListener('click', () => {
+                contextMenu.style.display = 'none';
+            });
+
+            changeWallpaperBtn.addEventListener('click', () => {
+                currentWallpaperIndex = (currentWallpaperIndex + 1) % wallpapers.length;
+                desktopContainer.style.backgroundImage = `url('${wallpapers[currentWallpaperIndex]}')`;
+            });
 
             // --- Login Functionality ---
             const handleLogin = () => {
                 if (passwordInput.value === 'password') {
-                    loginScreen.classList.add('fade-out');
+                    loginBox.style.display = 'none';
+                    loginScreen.classList.add('loading');
+                    loadingText.style.display = 'block';
+                    progressBarContainer.style.display = 'block';
                     setTimeout(() => {
-                        loginScreen.style.display = 'none';
-                        desktopContainer.style.display = 'block';
-                    }, 500);
-                    loginMessage.style.display = 'none';
+                        progressBar.style.width = '100%';
+                    }, 50);
+
+                    setTimeout(() => {
+                        loginScreen.classList.add('fade-out');
+                        setTimeout(() => {
+                            loginScreen.style.display = 'none';
+                            desktopContainer.style.display = 'block';
+                        }, 500);
+                    }, 2000);
                 } else {
                     loginMessage.style.display = 'block';
                 }
             };
-            
+
             loginBtn.addEventListener('click', handleLogin);
             passwordInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -582,7 +947,10 @@
             // --- Time and Date ---
             function updateTime() {
                 const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const timeStr = now.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
                 const dateStr = now.toLocaleDateString();
                 taskbarTime.innerHTML = `<span>${timeStr}</span><span>${dateStr}</span>`;
             }
@@ -601,115 +969,117 @@
                 }
             });
 
-            // --- Window Management ---
+            // --- Window Management (Dragging, Z-index, Minimize, Maximize, Close) ---
+            let activeWindow = null;
+            let isDragging = false;
+            let initialMouseX, initialMouseY, initialWindowX, initialWindowY;
+
+            desktop.addEventListener('mousedown', (e) => {
+                const windowEl = e.target.closest('.window');
+                if (windowEl) {
+                    windows.forEach(win => {
+                        win.classList.remove('active');
+                    });
+                    windowEl.classList.add('active');
+                    windowEl.style.zIndex = zIndexCounter++;
+                }
+
+                const titleBar = e.target.closest('.window-title-bar');
+                if (titleBar) {
+                    activeWindow = titleBar.closest('.window');
+                    initialMouseX = e.clientX;
+                    initialMouseY = e.clientY;
+                    initialWindowX = activeWindow.offsetLeft;
+                    initialWindowY = activeWindow.offsetTop;
+                    isDragging = true;
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                }
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging || activeWindow.classList.contains('maximized')) return;
+                let dx = e.clientX - initialMouseX;
+                let dy = e.clientY - initialMouseY;
+                let newX = initialWindowX + dx;
+                let newY = initialWindowY + dy;
+                newX = Math.max(0, Math.min(window.innerWidth - activeWindow.offsetWidth, newX));
+                newY = Math.max(0, Math.min(window.innerHeight - activeWindow.offsetHeight - 56, newY));
+                activeWindow.style.left = `${newX}px`;
+                activeWindow.style.top = `${newY}px`;
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
             document.addEventListener('click', (e) => {
+                const closeBtn = e.target.closest('.close-btn');
+                const minimizeBtn = e.target.closest('.minimize-btn');
+                const maximizeBtn = e.target.closest('.maximize-btn');
                 const windowTarget = e.target.closest('[data-window-target]');
+                const myComputerFolder = e.target.closest('.my-computer-folder');
+                
+                if (myComputerFolder) {
+                    alert(`Opening ${myComputerFolder.dataset.folder}... (This is a mock function)`);
+                    return;
+                }
+
                 if (windowTarget) {
-                    const windowId = windowTarget.dataset.window-target;
+                    const windowId = windowTarget.dataset.windowTarget;
                     const windowEl = document.querySelector(windowId);
                     if (windowEl) {
                         windows.forEach(win => {
                             win.classList.remove('active');
-                            win.style.zIndex = zIndexCounter - 1;
                         });
                         windowEl.style.display = 'flex';
                         windowEl.classList.add('active');
                         windowEl.style.zIndex = zIndexCounter++;
                         startMenu.style.display = 'none';
                     }
-                    return;
-                }
-
-                const closeBtn = e.target.closest('.close-btn');
-                const minimizeBtn = e.target.closest('.minimize-btn');
-                const maximizeBtn = e.target.closest('.maximize-btn');
-                
-                if (closeBtn) {
+                } else if (closeBtn) {
                     const windowEl = closeBtn.closest('.window');
                     windowEl.style.display = 'none';
+                    windowEl.classList.remove('active');
                 } else if (minimizeBtn) {
                     const windowEl = minimizeBtn.closest('.window');
                     windowEl.style.display = 'none';
+                    windowEl.classList.remove('active');
                 } else if (maximizeBtn) {
                     const windowEl = maximizeBtn.closest('.window');
                     windowEl.classList.toggle('maximized');
-                    if(windowEl.classList.contains('maximized')) {
-                         windowEl.style.top = '0';
-                         windowEl.style.left = '0';
-                         windowEl.style.width = '100vw';
-                         windowEl.style.height = 'calc(100vh - 56px)';
-                         windowEl.style.transform = 'none';
-                    } else {
-                        windowEl.style.top = '10%';
-                        windowEl.style.left = '20%';
-                        windowEl.style.width = '500px';
-                        windowEl.style.height = '400px';
-                    }
                 }
             });
-            
-            // --- Window Dragging and Z-index ---
-            let activeWindow = null;
-            let initialMouseX, initialMouseY, initialWindowX, initialWindowY;
-            
-            desktop.addEventListener('mousedown', (e) => {
-                const titleBar = e.target.closest('.window-title-bar');
-                if (!titleBar) {
-                    // Clicks on windows but not title bar still brings them to front
-                    const windowClicked = e.target.closest('.window');
-                    if (windowClicked) {
-                        windows.forEach(win => win.classList.remove('active'));
-                        windowClicked.classList.add('active');
-                        windowClicked.style.zIndex = zIndexCounter++;
-                    }
-                    return;
-                }
-                
-                activeWindow = titleBar.closest('.window');
-                
-                windows.forEach(win => win.classList.remove('active'));
-                activeWindow.classList.add('active');
-                activeWindow.style.zIndex = zIndexCounter++;
-                
-                initialMouseX = e.clientX;
-                initialMouseY = e.clientY;
-                initialWindowX = activeWindow.offsetLeft;
-                initialWindowY = activeWindow.offsetTop;
-                
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            });
-            
-            function onMouseMove(e) {
-                if (!activeWindow || activeWindow.classList.contains('maximized')) return;
-                
-                let dx = e.clientX - initialMouseX;
-                let dy = e.clientY - initialMouseY;
-                
-                let newX = initialWindowX + dx;
-                let newY = initialWindowY + dy;
-                
-                // Keep window within desktop bounds
-                newX = Math.max(0, Math.min(window.innerWidth - activeWindow.offsetWidth, newX));
-                newY = Math.max(0, Math.min(window.innerHeight - activeWindow.offsetHeight - 56, newY)); // 56px for taskbar
-                
-                activeWindow.style.left = `${newX}px`;
-                activeWindow.style.top = `${newY}px`;
-            }
-            
-            function onMouseUp() {
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-                activeWindow = null;
-            }
 
-            // --- Shutdown button ---
-            shutdownButton.addEventListener('click', () => {
-                const result = confirm("Are you sure you want to shut down?");
-                if (result) {
-                    window.location.reload(); // A simple way to "shut down"
+            // --- Shutdown Logic ---
+            const performPowerAction = (action) => {
+                const message = `Are you sure you want to ${action}?`;
+                if (!confirm(message)) return;
+
+                startMenu.style.display = 'none';
+                
+                if (action === 'shutdown' || action === 'restart') {
+                    desktopContainer.style.display = 'none'; // Hide desktop immediately
+                    shutdownScreen.style.display = 'flex';
+                    setTimeout(() => shutdownScreen.classList.add('visible'), 100);
+
+                    setTimeout(() => {
+                        if (action === 'restart') {
+                            window.location.reload();
+                        } else {
+                            alert(`The system has shut down. To restart, refresh the page.`);
+                        }
+                    }, 4000);
+                } else if (action === 'sleep') {
+                    alert("Entering sleep mode. Click OK to wake up.");
                 }
-            });
+            };
+            
+            shutdownButton.addEventListener('click', () => performPowerAction('shutdown'));
+            restartButton.addEventListener('click', () => performPowerAction('restart'));
+            sleepButton.addEventListener('click', () => performPowerAction('sleep'));
         });
     </script>
 </body>
