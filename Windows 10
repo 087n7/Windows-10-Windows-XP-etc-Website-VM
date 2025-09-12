@@ -60,17 +60,8 @@
             color: var(--text-color-light);
             z-index: 2000;
             transition: opacity 0.5s ease-in-out;
-            animation: pulse 10s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% {
-                background-size: 100% auto;
-            }
-
-            100% {
-                background-size: 105% auto;
-            }
+            backdrop-filter: blur(5px);
+            /* Added blur for realism */
         }
 
         #login-screen.fade-out {
@@ -88,34 +79,48 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            /* Adjusted gap */
             text-align: center;
             background: rgba(0, 0, 0, 0.2);
             padding: 40px;
-            backdrop-filter: blur(10px);
+            /*backdrop-filter: blur(10px); Removed as it's now on the main screen */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: none;
+            /* Removed border for realism */
         }
 
         .login-box h1 {
-            font-size: 2.5em;
+            font-size: 1.8em;
+            /* Smaller font size */
             margin: 0;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         .login-box .user-icon {
             font-size: 80px;
+            /* Changed to a more subtle icon */
+            color: #fff;
             border-radius: 50%;
-            border: 2px solid #fff;
-            padding: 10px;
+            border: none;
+            /* Removed border */
+            padding: 0;
         }
 
         .login-box .input-group {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            /* Lighter, semi-transparent background */
             width: 250px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            /* New input style */
+            transition: border-bottom 0.2s ease-in-out;
+        }
+
+        .login-box .input-group:focus-within {
+            border-bottom-color: #0078d7;
+            /* Blue focus border */
         }
 
         .login-box input {
@@ -133,8 +138,10 @@
         }
 
         .login-box button {
-            background: #0078d7;
-            color: #fff;
+            background: transparent;
+            /* Transparent button background */
+            color: #0078d7;
+            /* Blue arrow icon */
             border: none;
             padding: 10px 15px;
             font-size: 1em;
@@ -143,7 +150,8 @@
         }
 
         .login-box button:hover {
-            background: #005a9e;
+            background: rgba(0, 0, 0, 0.2);
+            /* Subtle hover effect */
         }
 
         .loading-text {
@@ -995,243 +1003,329 @@
             <div class="window-content">
                 <h3>Calculator Mockup</h3>
                 <p>1 + 1 = 2 (Trust me).</p>
-                <div style="backgr"></div>
             </div>
         </div>
-
-        <div class="window" id="notepad-window" data-app-name="Notepad">
-            <div class="window-title-bar">
-                <span>Notepad</span>
-                <div class="window-title-buttons">
-                    <button class="minimize-btn"><i class="fas fa-window-minimize"></i></button>
-                    <button class="maximize-btn"><i class="fas fa-window-maximize"></i></button>
-                    <button class="close-btn"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
-            <div class="window-content">
-                <textarea style="width: 100%; height: 100%; border: none; font-family: 'Consolas', monospace; font-size: 14px; background: transparent; outline: none; resize: none;"></textarea>
-            </div>
-        </div>
-
-        <div id="shutdown-screen">
-            <div class="shutdown-content">
-                <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Windows Logo" style="width: 100px; margin-bottom: 20px;">
-                <h1>Shutting Down</h1>
-                <div class="loading-dots">
-                    <span>.</span>
-                    <span>.</span>
-                    <span>.</span>
-                </div>
-            </div>
-        </div>
-
-        <div id="custom-cursor"></div>
     </div>
-
+    <div id="shutdown-screen">
+        <div class="shutdown-content">
+            <img src="https://img.icons8.com/fluency/96/000000/windows-10.png" alt="Windows Logo" style="width: 80px; filter: grayscale(1);">
+            <p>Shutting down</p>
+            <div class="loading-dots">
+                <span>.</span><span>.</span><span>.</span>
+            </div>
+        </div>
+    </div>
+    <div id="context-menu">
+        <div class="context-menu-item">
+            <i class="fas fa-desktop"></i>
+            <span>View</span>
+        </div>
+        <div class="context-menu-item">
+            <i class="fas fa-sort-alpha-down"></i>
+            <span>Sort by</span>
+        </div>
+        <div class="context-menu-item">
+            <i class="fas fa-sync-alt"></i>
+            <span>Refresh</span>
+        </div>
+        <hr style="margin: 5px 0;">
+        <div class="context-menu-item">
+            <i class="fas fa-terminal"></i>
+            <span>Open in Terminal</span>
+        </div>
+        <div class="context-menu-item">
+            <i class="fas fa-plus"></i>
+            <span>New</span>
+        </div>
+        <hr style="margin: 5px 0;">
+        <div class="context-menu-item">
+            <i class="fas fa-cog"></i>
+            <span>Display settings</span>
+        </div>
+        <div class="context-menu-item">
+            <i class="fas fa-image"></i>
+            <span>Personalize</span>
+        </div>
+    </div>
+    <div id="custom-cursor"></div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginScreen = document.getElementById('login-screen');
-            const passwordInput = document.getElementById('password-input');
-            const loginBtn = document.getElementById('login-btn');
-            const loginMessage = document.getElementById('login-message');
-            const loadingText = document.querySelector('.loading-text');
-            const progressBarContainer = document.querySelector('.progress-bar-container');
-            const desktopContainer = document.getElementById('desktop-container');
-            const startButton = document.getElementById('start-button');
-            const startMenu = document.getElementById('start-menu');
-            const shutdownButton = document.getElementById('shutdown-button');
-            const desktop = document.getElementById('desktop');
-            const taskbarTime = document.getElementById('taskbarTime');
-            const taskbarIcons = document.getElementById('taskbar-icons');
-            const shutdownScreen = document.getElementById('shutdown-screen');
+        const loginScreen = document.getElementById('login-screen');
+        const loginBtn = document.getElementById('login-btn');
+        const passwordInput = document.getElementById('password-input');
+        const loginMessage = document.getElementById('login-message');
+        const loadingText = document.querySelector('.loading-text');
+        const progressBarContainer = document.querySelector('.progress-bar-container');
+        const progressBar = document.querySelector('.progress-bar');
+        const desktopContainer = document.getElementById('desktop-container');
+        const startButton = document.getElementById('start-button');
+        const startMenu = document.getElementById('start-menu');
+        const shutdownButton = document.getElementById('shutdown-button');
+        const restartButton = document.getElementById('restart-button');
+        const shutdownScreen = document.getElementById('shutdown-screen');
+        const myComputerIcon = document.getElementById('my-computer-icon');
+        const fileExplorerIcon = document.getElementById('file-explorer-icon');
+        const customCursor = document.getElementById('custom-cursor');
+        const desktop = document.getElementById('desktop');
+        const contextMenu = document.getElementById('context-menu');
+        const taskbarIcons = document.getElementById('taskbar-icons');
+        let zIndexCounter = 2000;
+        let activeWindow = null;
+        let windows = {};
+        let isDragging = false;
+        let currentWindow;
+        let offsetX, offsetY;
+        let isResizing = false;
+        let initialMouseX, initialMouseY, initialWidth, initialHeight, initialTop, initialLeft;
+        const resizeHandleSize = 10;
+        let resizeDirection = '';
 
-            // --- Login Logic ---
-            loginBtn.addEventListener('click', () => {
-                const password = passwordInput.value;
-                if (password.toLowerCase() === 'password') {
-                    loginMessage.style.display = 'none';
-                    loginScreen.classList.add('loading');
-                    loadingText.style.display = 'block';
-                    progressBarContainer.style.display = 'block';
-
-                    const progressBar = document.querySelector('.progress-bar');
-                    let width = 0;
-                    const interval = setInterval(() => {
-                        width += Math.random() * 10;
-                        if (width >= 100) {
-                            width = 100;
-                            clearInterval(interval);
-                            setTimeout(() => {
-                                loginScreen.classList.add('fade-out');
-                                desktopContainer.style.display = 'block';
-                                setTimeout(() => {
-                                    loginScreen.style.display = 'none';
-                                }, 500);
-                            }, 500);
-                        }
-                        progressBar.style.width = width + '%';
-                    }, 100);
-                } else {
-                    loginMessage.style.display = 'block';
-                }
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true
             });
-
-            // --- Start Menu & Taskbar ---
-            startButton.addEventListener('click', (event) => {
-                event.stopPropagation();
-                startMenu.style.display = startMenu.style.display === 'flex' ? 'none' : 'flex';
+            const date = now.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
             });
+            document.getElementById('taskbarTime').innerHTML = `${time}<br>${date}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
 
-            document.addEventListener('click', (event) => {
-                if (!startMenu.contains(event.target) && !startButton.contains(event.target)) {
-                    startMenu.style.display = 'none';
-                }
-            });
-
-            // --- Power Options ---
-            shutdownButton.addEventListener('click', () => {
-                startMenu.style.display = 'none';
-                shutdownScreen.style.display = 'flex';
+        // Login functionality
+        loginBtn.addEventListener('click', () => {
+            if (passwordInput.value === 'password') {
+                loginScreen.classList.add('loading');
+                loginMessage.style.display = 'none';
+                loadingText.style.display = 'block';
+                progressBarContainer.style.display = 'block';
                 setTimeout(() => {
-                    shutdownScreen.classList.add('visible');
-                    setTimeout(() => {
-                        alert('The system is shutting down.');
-                        // You could redirect or hide elements here.
-                    }, 3000);
+                    progressBar.style.width = '100%';
                 }, 100);
-            });
 
-            // --- Window Management ---
-            const windows = document.querySelectorAll('.window');
-            const appIcons = document.querySelectorAll('.icon[data-window-target], .start-menu-app[data-window-target]');
-            let zIndexCounter = 2000;
+                setTimeout(() => {
+                    loginScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        desktopContainer.style.display = 'block';
+                    }, 500);
+                }, 3500);
+            } else {
+                loginMessage.style.display = 'block';
+                passwordInput.value = '';
+            }
+        });
 
-            appIcons.forEach(icon => {
-                icon.addEventListener('click', () => {
-                    const targetWindowId = icon.getAttribute('data-window-target');
-                    const targetWindow = document.querySelector(targetWindowId);
-                    const appName = icon.getAttribute('data-app-name');
-                    if (targetWindow) {
-                        openWindow(targetWindow, appName);
-                    }
-                });
-            });
+        // Start Menu functionality
+        startButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            startMenu.style.display = startMenu.style.display === 'flex' ? 'none' : 'flex';
+        });
 
-            function openWindow(win, appName) {
-                win.style.display = 'flex';
-                win.style.zIndex = ++zIndexCounter;
-                activateWindow(win);
-                createTaskbarItem(win, appName);
+        document.addEventListener('click', (event) => {
+            if (!startMenu.contains(event.target) && event.target !== startButton) {
+                startMenu.style.display = 'none';
+            }
+        });
+
+        // Window functionality
+        function openWindow(windowId, appName) {
+            const window = document.getElementById(windowId);
+            if (!window) return;
+
+            // Check if window already exists in the DOM
+            if (!document.body.contains(window)) {
+                document.body.appendChild(window);
             }
 
-            function activateWindow(win) {
-                document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
-                win.classList.add('active');
-                win.style.zIndex = ++zIndexCounter;
+            // Bring to front
+            zIndexCounter++;
+            window.style.zIndex = zIndexCounter;
+            window.classList.add('active');
+            if (activeWindow) {
+                activeWindow.classList.remove('active');
             }
+            activeWindow = window;
 
-            function createTaskbarItem(win, appName) {
-                const existingItem = taskbarIcons.querySelector(`[data-window-target="#${win.id}"]`);
-                if (existingItem) {
-                    existingItem.classList.add('active');
-                    return;
-                }
+            window.style.display = 'flex';
+            window.style.top = '10%';
+            window.style.left = '20%';
+            window.style.width = '500px';
+            window.style.height = '400px';
 
+            if (!windows[windowId]) {
                 const taskbarItem = document.createElement('div');
-                taskbarItem.className = 'taskbar-item active';
-                taskbarItem.setAttribute('data-window-target', `#${win.id}`);
-                taskbarItem.innerHTML = `<img src="${win.querySelector('.window-title-bar').previousElementSibling.src}" alt="${appName}">`;
+                taskbarItem.classList.add('taskbar-item');
+                taskbarItem.innerHTML = `<img src="${window.querySelector('img') ? window.querySelector('img').src : 'https://img.icons8.com/color/96/000000/application-window.png'}" alt="${appName}">`;
+                taskbarIcons.appendChild(taskbarItem);
+
+                windows[windowId] = {
+                    window: window,
+                    taskbarItem: taskbarItem
+                };
 
                 taskbarItem.addEventListener('click', () => {
-                    if (win.style.display === 'none') {
-                        win.style.display = 'flex';
-                        activateWindow(win);
-                    } else if (win.classList.contains('active')) {
-                        win.style.display = 'none';
+                    if (window.style.display === 'none') {
+                        window.style.display = 'flex';
+                        taskbarItem.classList.add('active');
+                        bringToFront(window);
+                    } else if (activeWindow === window) {
+                        window.style.display = 'none';
                         taskbarItem.classList.remove('active');
                     } else {
-                        activateWindow(win);
+                        bringToFront(window);
                     }
                 });
-                taskbarIcons.appendChild(taskbarItem);
             }
 
-            windows.forEach(win => {
-                const titleBar = win.querySelector('.window-title-bar');
-                const closeBtn = win.querySelector('.close-btn');
-                const minimizeBtn = win.querySelector('.minimize-btn');
-                const maximizeBtn = win.querySelector('.maximize-btn');
+            // Remove active class from previous taskbar item and add to current
+            document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
+            windows[windowId].taskbarItem.classList.add('active');
+        }
 
-                win.addEventListener('mousedown', () => {
-                    activateWindow(win);
-                });
+        function bringToFront(window) {
+            zIndexCounter++;
+            window.style.zIndex = zIndexCounter;
+            if (activeWindow) {
+                activeWindow.classList.remove('active');
+            }
+            activeWindow = window;
+            window.classList.add('active');
 
-                closeBtn.addEventListener('click', () => {
-                    win.style.display = 'none';
-                    const taskbarItem = taskbarIcons.querySelector(`[data-window-target="#${win.id}"]`);
-                    if (taskbarItem) {
-                        taskbarItem.remove();
-                    }
-                });
+            // Update taskbar active state
+            document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
+            const appName = window.dataset.appName;
+            for (const id in windows) {
+                if (windows[id].window === window) {
+                    windows[id].taskbarItem.classList.add('active');
+                    break;
+                }
+            }
+        }
 
-                minimizeBtn.addEventListener('click', () => {
-                    win.style.display = 'none';
-                    const taskbarItem = taskbarIcons.querySelector(`[data-window-target="#${win.id}"]`);
-                    if (taskbarItem) {
-                        taskbarItem.classList.remove('active');
-                    }
-                });
+        document.querySelectorAll('[data-window-target]').forEach(item => {
+            item.addEventListener('click', (event) => {
+                const windowId = event.currentTarget.dataset.windowTarget.substring(1);
+                const appName = event.currentTarget.dataset.appName;
+                openWindow(windowId, appName);
+            });
+        });
 
-                maximizeBtn.addEventListener('click', () => {
-                    if (win.classList.contains('maximized')) {
-                        win.classList.remove('maximized');
-                    } else {
-                        win.classList.add('maximized');
-                    }
-                });
+        // Window controls (minimize, maximize, close)
+        document.querySelectorAll('.window').forEach(windowEl => {
+            const minimizeBtn = windowEl.querySelector('.minimize-btn');
+            const maximizeBtn = windowEl.querySelector('.maximize-btn');
+            const closeBtn = windowEl.querySelector('.close-btn');
+            const titleBar = windowEl.querySelector('.window-title-bar');
 
-                // --- Window Dragging ---
-                let isDragging = false;
-                let offsetX, offsetY;
-
-                titleBar.addEventListener('mousedown', (e) => {
-                    if (win.classList.contains('maximized')) return;
-                    isDragging = true;
-                    offsetX = e.clientX - win.offsetLeft;
-                    offsetY = e.clientY - win.offsetTop;
-                    win.style.cursor = 'grabbing';
-                });
-
-                desktopContainer.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    e.preventDefault();
-                    win.style.left = `${e.clientX - offsetX}px`;
-                    win.style.top = `${e.clientY - offsetY}px`;
-                });
-
-                desktopContainer.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    win.style.cursor = 'default';
-                });
+            // Minimize
+            minimizeBtn.addEventListener('click', () => {
+                windowEl.style.display = 'none';
+                if (activeWindow === windowEl) {
+                    activeWindow = null;
+                }
+                windows[windowEl.id].taskbarItem.classList.remove('active');
             });
 
-            // --- Taskbar Time Update ---
-            function updateTime() {
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                const dateString = now.toLocaleDateString('en-US', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
-                });
-                taskbarTime.innerHTML = `${timeString}<br>${dateString}`;
-            }
-            setInterval(updateTime, 1000);
-            updateTime();
+            // Maximize
+            maximizeBtn.addEventListener('click', () => {
+                windowEl.classList.toggle('maximized');
+            });
 
+            // Close
+            closeBtn.addEventListener('click', () => {
+                windowEl.style.display = 'none';
+                if (activeWindow === windowEl) {
+                    activeWindow = null;
+                }
+                const taskbarItem = windows[windowEl.id].taskbarItem;
+                if (taskbarItem) {
+                    taskbarItem.remove();
+                    delete windows[windowEl.id];
+                }
+            });
+
+            // Dragging
+            titleBar.addEventListener('mousedown', (e) => {
+                if (e.target.tagName === 'BUTTON' || windowEl.classList.contains('maximized')) {
+                    return;
+                }
+                isDragging = true;
+                currentWindow = windowEl;
+                bringToFront(currentWindow);
+                offsetX = e.clientX - windowEl.offsetLeft;
+                offsetY = e.clientY - windowEl.offsetTop;
+            });
+
+            windowEl.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.window-title-bar')) return;
+                bringToFront(windowEl);
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                currentWindow.style.left = `${e.clientX - offsetX}px`;
+                currentWindow.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Shutdown functionality
+        shutdownButton.addEventListener('click', () => {
+            shutdownScreen.style.display = 'flex';
+            setTimeout(() => {
+                shutdownScreen.classList.add('visible');
+            }, 10);
+            setTimeout(() => {
+                window.close(); // Note: This will only work if the script opened the window
+            }, 3000);
+        });
+
+        // Restart functionality
+        restartButton.addEventListener('click', () => {
+            shutdownScreen.style.display = 'flex';
+            setTimeout(() => {
+                shutdownScreen.classList.add('visible');
+            }, 10);
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
+        });
+
+        // Custom cursor
+        desktopContainer.addEventListener('mousemove', (e) => {
+            customCursor.style.left = `${e.clientX}px`;
+            customCursor.style.top = `${e.clientY}px`;
+        });
+        document.body.addEventListener('mouseenter', () => {
+            customCursor.style.display = 'block';
+        });
+        document.body.addEventListener('mouseleave', () => {
+            customCursor.style.display = 'none';
+        });
+
+        // Right-click context menu
+        desktop.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            contextMenu.style.display = 'block';
+            contextMenu.style.left = `${e.clientX}px`;
+            contextMenu.style.top = `${e.clientY}px`;
+        });
+
+        document.addEventListener('click', () => {
+            contextMenu.style.display = 'none';
+        });
+
+        // Hide context menu on scroll
+        window.addEventListener('scroll', () => {
+            contextMenu.style.display = 'none';
         });
     </script>
 </body>
