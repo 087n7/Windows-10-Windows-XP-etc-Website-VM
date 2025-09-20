@@ -202,7 +202,7 @@
         .taskbar-start:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-        
+         
         /* Updated Search Box Styles */
         .taskbar-search {
             margin-left: 10px;
@@ -239,7 +239,7 @@
             align-items: center;
             margin-left: 10px;
         }
-        
+         
         .taskbar-pinned {
             display: flex;
             align-items: center;
@@ -499,6 +499,7 @@
             background: var(--window-bg);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--window-border);
+            border-radius: 8px; /* Fix #4: Added default border-radius */
             font-family: var(--font-family);
             z-index: 999;
             display: none;
@@ -820,293 +821,278 @@
     </style>
 </head>
 <body>
-    <div id="login-screen">
-        <div class="login-box" role="dialog" aria-modal="true" aria-labelledby="login-heading">
-            <h1 id="login-heading">User</h1>
-            <i class="fas fa-user-circle user-icon"></i>
-            <div class="input-group">
-                <input type="password" id="password-input" placeholder="Password" aria-label="Password">
-                <button id="login-btn" aria-label="Log in"><i class="fas fa-arrow-right"></i></button>
+    <div id="main-container">
+        <div id="login-screen">
+            <div class="login-box" role="dialog" aria-modal="true" aria-labelledby="login-heading">
+                <h1 id="login-heading">User</h1>
+                <i class="fas fa-user-circle user-icon"></i>
+                <div class="input-group">
+                    <input type="password" id="password-input" placeholder="Password" aria-label="Password">
+                    <button id="login-btn" aria-label="Log in"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <p id="login-message" role="alert" style="color: #e81123; display: none;">Incorrect password. Try "password".</p>
             </div>
-            <p id="login-message" role="alert" style="color: #e81123; display: none;">Incorrect password. Try "password".</p>
+        </div>
+
+        <div class="desktop-container" id="desktop-container" style="display: none;">
+            <div class="desktop active" id="desktop-1">
+                <div class="icon" id="documents-icon" data-window-target="#documents-window" data-taskbar-id="documents-taskbar-item" role="button" tabindex="0">
+                    <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" alt="Documents icon">
+                    <span>Documents</span>
+                </div>
+                <div class="icon" id="file-explorer-icon" data-window-target="#file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" role="button" tabindex="0">
+                    <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" alt="File Explorer icon">
+                    <span>File Explorer</span>
+                </div>
+                <div class="icon" id="edge-icon" data-window-target="#edge-window" data-taskbar-id="edge-taskbar-item" role="button" tabindex="0">
+                    <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" alt="Microsoft Edge icon">
+                    <span>Microsoft Edge</span>
+                </div>
+                <div class="icon" id="spotify-icon" data-window-target="#spotify-window" data-taskbar-id="spotify-taskbar-item" role="button" tabindex="0">
+                    <img src="https://img.icons8.com/fluency/96/spotify.png" alt="Spotify icon">
+                    <span>Spotify</span>
+                </div>
+                <div class="icon" id="vscode-icon" data-window-target="#vscode-window" data-taskbar-id="vscode-taskbar-item" role="button" tabindex="0">
+                    <img src="https://img.icons8.com/fluency/96/visual-studio-code-2019.png" alt="Visual Studio Code icon">
+                    <span>Visual Studio Code</span>
+                </div>
+            </div>
+
+            <div class="taskbar">
+                <div class="taskbar-start" id="start-button" role="button" aria-expanded="false" aria-controls="start-menu" tabindex="0">
+                    <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Start">
+                </div>
+                <div class="taskbar-item" id="task-view-button" role="button" aria-label="Task View" tabindex="0">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="taskbar-search" id="cortana-button" role="search" aria-label="Search" tabindex="0">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="taskbar-search-input" placeholder="Type here to search...">
+                </div>
+                <div class="taskbar-icons" role="toolbar" aria-label="Running applications">
+                    </div>
+                <div class="taskbar-right">
+                    <div class="taskbar-notification" role="button" aria-label="Notifications" tabindex="0">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <div class="taskbar-time" id="taskbarTime" role="timer" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div class="start-menu" id="start-menu" role="menu" aria-hidden="true" style="display: none;">
+                <div class="start-menu-left">
+                    <div class="start-menu-power power-icon" id="shutdown-button" role="menuitem" aria-label="Power" tabindex="0">
+                        <i class="fa-solid fa-power-off"></i>
+                    </div>
+                </div>
+                <div class="start-menu-right">
+                    <div class="start-menu-header">All Apps</div>
+                    <div class="start-menu-apps">
+                        <div class="start-menu-app" data-window-target="#file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" alt="File Explorer app icon">
+                            <span>File Explorer</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#settings-window" data-taskbar-id="settings-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://img.icons8.com/color/48/000000/settings.png" alt="Settings app icon">
+                            <span>Settings</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#task-manager-window" data-taskbar-id="task-manager-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/task-manager.png?raw=true" alt="Task Manager app icon">
+                            <span>Task Manager</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#calculator-window" data-taskbar-id="calculator-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://img.icons8.com/fluency/48/calculator.png" alt="Calculator app icon">
+                            <span>Calculator</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#documents-window" data-taskbar-id="documents-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" alt="Documents app icon">
+                            <span>Documents</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#edge-window" data-taskbar-id="edge-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" alt="Microsoft Edge app icon">
+                            <span>Microsoft Edge</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#spotify-window" data-taskbar-id="spotify-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://img.icons8.com/fluency/48/spotify.png" alt="Spotify app icon">
+                            <span>Spotify</span>
+                        </div>
+                        <div class="start-menu-app" data-window-target="#vscode-window" data-taskbar-id="vscode-taskbar-item" role="menuitem" tabindex="0">
+                            <img src="https://img.icons8.com/fluency/48/visual-studio-code-2019.png" alt="Visual Studio Code app icon">
+                            <span>Visual Studio Code</span>
+                        </div>
+                    </div>
+                    <div class="start-menu-tiles">
+                        <div class="tile tile-medium" data-window-target="#weather-window" data-taskbar-id="weather-taskbar-item" style="background: #008298;" role="button" tabindex="0">
+                            <div class="tile-content">Weather</div>
+                        </div>
+                        <div class="tile tile-small" style="background: #e61d5f;" role="button" tabindex="0">
+                            <div class="tile-content">Photos</div>
+                        </div>
+                        <div class="tile tile-small" style="background: #00b9f1;" role="button" tabindex="0">
+                            <div class="tile-content">News</div>
+                        </div>
+                        <div class="tile tile-wide" style="background: #7a1d7a;" role="button" tabindex="0">
+                            <div class="tile-content">Store</div>
+                        </div>
+                        <div class="tile tile-medium" style="background: #202020;" role="button" tabindex="0">
+                            <div class="tile-content">Mail</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cortana-flyout" role="search" aria-hidden="true" style="display: none;">
+                <div class="cortana-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search the web and Windows">
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="desktop-container" id="desktop-container" style="display: none;">
-        <div class="desktop active" id="desktop-1">
-            <div class="icon" id="documents-icon" data-window-target="#documents-window" data-taskbar-id="documents-taskbar-item" role="button" tabindex="0">
-                <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" alt="Documents icon">
-                <span>Documents</span>
-            </div>
-            <div class="icon" id="file-explorer-icon" data-window-target="#file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" role="button" tabindex="0">
-                <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" alt="File Explorer icon">
-                <span>File Explorer</span>
-            </div>
-            <div class="icon" id="edge-icon" data-window-target="#edge-window" data-taskbar-id="edge-taskbar-item" role="button" tabindex="0">
-                <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" alt="Microsoft Edge icon">
-                <span>Microsoft Edge</span>
-            </div>
-            <div class="icon" id="spotify-icon" data-window-target="#spotify-window" data-taskbar-id="spotify-taskbar-item" role="button" tabindex="0">
-                <img src="https://img.icons8.com/fluency/96/spotify.png" alt="Spotify icon">
-                <span>Spotify</span>
-            </div>
-            <div class="icon" id="vscode-icon" data-window-target="#vscode-window" data-taskbar-id="vscode-taskbar-item" role="button" tabindex="0">
-                <img src="https://img.icons8.com/fluency/96/visual-studio-code-2019.png" alt="Visual Studio Code icon">
-                <span>Visual Studio Code</span>
-            </div>
-        </div>
-
-        <div class="taskbar">
-            <div class="taskbar-start" id="start-button" role="button" aria-expanded="false" aria-controls="start-menu" tabindex="0">
-                <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Start">
-            </div>
-            <div class="taskbar-item" id="task-view-button" role="button" aria-label="Task View" tabindex="0">
-                <i class="fa-solid fa-layer-group"></i>
-            </div>
-            <div class="taskbar-search" id="cortana-button" role="search" aria-label="Search" tabindex="0">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="taskbar-search-input" placeholder="Type here to search...">
-            </div>
-            <div class="taskbar-icons" role="toolbar" aria-label="Running applications">
-                </div>
-            <div class="taskbar-right">
-                <div class="taskbar-notification" role="button" aria-label="Notifications" tabindex="0">
-                    <i class="fa-regular fa-bell"></i>
-                </div>
-                <div class="taskbar-time" id="taskbarTime" role="timer" aria-live="polite"></div>
-            </div>
-        </div>
-
-        <div class="start-menu" id="start-menu" role="menu" aria-hidden="true" style="display: none;">
-            <div class="start-menu-left">
-                <div class="start-menu-power power-icon" id="shutdown-button" role="menuitem" aria-label="Power" tabindex="0">
-                    <i class="fa-solid fa-power-off"></i>
-                </div>
-            </div>
-            <div class="start-menu-right">
-                <div class="start-menu-header">All Apps</div>
-                <div class="start-menu-apps">
-                    <div class="start-menu-app" data-window-target="#file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" alt="File Explorer app icon">
-                        <span>File Explorer</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#settings-window" data-taskbar-id="settings-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://img.icons8.com/color/48/000000/settings.png" alt="Settings app icon">
-                        <span>Settings</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#task-manager-window" data-taskbar-id="task-manager-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/task-manager.png?raw=true" alt="Task Manager app icon">
-                        <span>Task Manager</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#calculator-window" data-taskbar-id="calculator-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://img.icons8.com/fluency/48/calculator.png" alt="Calculator app icon">
-                        <span>Calculator</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#documents-window" data-taskbar-id="documents-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" alt="Documents app icon">
-                        <span>Documents</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#edge-window" data-taskbar-id="edge-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" alt="Microsoft Edge app icon">
-                        <span>Microsoft Edge</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#spotify-window" data-taskbar-id="spotify-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://img.icons8.com/fluency/48/spotify.png" alt="Spotify app icon">
-                        <span>Spotify</span>
-                    </div>
-                    <div class="start-menu-app" data-window-target="#vscode-window" data-taskbar-id="vscode-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://img.icons8.com/fluency/48/visual-studio-code-2019.png" alt="Visual Studio Code app icon">
-                        <span>Visual Studio Code</span>
-                    </div>
-                </div>
-                <div class="start-menu-tiles">
-                    <div class="tile tile-medium" data-window-target="#weather-window" data-taskbar-id="weather-taskbar-item" style="background: #008298;" role="button" tabindex="0">
-                        <div class="tile-content">Weather</div>
-                    </div>
-                    <div class="tile tile-small" style="background: #e61d5f;" role="button" tabindex="0">
-                        <div class="tile-content">Photos</div>
-                    </div>
-                    <div class="tile tile-small" style="background: #00b9f1;" role="button" tabindex="0">
-                        <div class="tile-content">News</div>
-                    </div>
-                    <div class="tile tile-wide" style="background: #7a1d7a;" role="button" tabindex="0">
-                        <div class="tile-content">Store</div>
-                    </div>
-                    <div class="tile tile-medium" style="background: #202020;" role="button" tabindex="0">
-                        <div class="tile-content">Mail</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="window" id="file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" data-desktop="desktop-1" role="dialog" aria-labelledby="file-explorer-title">
+    
+    <div class="window" id="file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" data-app-name="File Explorer">
         <div class="window-title-bar">
-            <span id="file-explorer-title">File Explorer</span>
+            <span>File Explorer</span>
             <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
         <div class="window-content">
-            <p>This is the File Explorer window.</p>
+            <p>This is a mock File Explorer window.</p>
         </div>
     </div>
-
-    <div class="window" id="documents-window" data-taskbar-id="documents-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" data-desktop="desktop-1" role="dialog" aria-labelledby="documents-title">
+    
+    <div class="window" id="documents-window" data-taskbar-id="documents-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" data-app-name="Documents">
         <div class="window-title-bar">
-            <span id="documents-title">Documents</span>
+            <span>Documents</span>
             <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
         <div class="window-content">
-            <p>Welcome to your documents!</p>
+            <p>This is a mock Documents window. It contains important files.</p>
         </div>
     </div>
 
-    <div class="window" id="settings-window" data-taskbar-id="settings-taskbar-item" data-app-icon="https://img.icons8.com/color/48/000000/settings.png" data-desktop="desktop-1" role="dialog" aria-labelledby="settings-title">
+    <div class="window" id="edge-window" data-taskbar-id="edge-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" data-app-name="Microsoft Edge">
         <div class="window-title-bar">
-            <span id="settings-title">Settings</span>
+            <span>Microsoft Edge</span>
             <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
         <div class="window-content">
-            <p>This is the Settings window.</p>
+            <iframe src="https://www.bing.com" style="width:100%; height:100%; border:0;"></iframe>
         </div>
     </div>
 
-    <div class="window" id="task-manager-window" data-taskbar-id="task-manager-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/task-manager.png?raw=true" style="width: 600px; height: 450px;" data-desktop="desktop-1" role="dialog" aria-labelledby="task-manager-title">
+    <div class="window" id="spotify-window" data-taskbar-id="spotify-taskbar-item" data-app-icon="https://img.icons8.com/fluency/96/spotify.png" data-app-name="Spotify">
         <div class="window-title-bar">
-            <span id="task-manager-title">Task Manager</span>
+            <span>Spotify</span>
             <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <iframe src="https://open.spotify.com" style="width:100%; height:100%; border:0;"></iframe>
+        </div>
+    </div>
+
+    <div class="window" id="vscode-window" data-taskbar-id="vscode-taskbar-item" data-app-icon="https://img.icons8.com/fluency/96/visual-studio-code-2019.png" data-app-name="Visual Studio Code">
+        <div class="window-title-bar">
+            <span>Visual Studio Code</span>
+            <div class="window-title-buttons">
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <p>This is a mock Visual Studio Code window. You can't actually edit code here, but you get the idea.</p>
+        </div>
+    </div>
+
+    <div class="window" id="settings-window" data-taskbar-id="settings-taskbar-item" data-app-icon="https://img.icons8.com/color/48/000000/settings.png" data-app-name="Settings">
+        <div class="window-title-bar">
+            <span>Settings</span>
+            <div class="window-title-buttons">
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <h3>System Settings</h3>
+            <p>Display, sound, notifications, power</p>
+            <h3>Devices</h3>
+            <p>Bluetooth, printers, mouse</p>
+        </div>
+    </div>
+
+    <div class="window" id="task-manager-window" data-taskbar-id="task-manager-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/task-manager.png?raw=true" data-app-name="Task Manager">
+        <div class="window-title-bar">
+            <span>Task Manager</span>
+            <div class="window-title-buttons">
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
         <div class="window-content task-manager-content">
-            <div class="task-manager-nav" role="tablist">
-                <div class="task-manager-nav-item active" role="tab" aria-controls="processes-tab" tabindex="0">Processes</div>
-                <div class="task-manager-nav-item" role="tab" aria-controls="performance-tab" tabindex="-1">Performance</div>
+            <div class="task-manager-nav">
+                <div class="task-manager-nav-item active">Processes</div>
+                <div class="task-manager-nav-item">Performance</div>
+                <div class="task-manager-nav-item">App history</div>
             </div>
-            <div class="task-manager-process-list" id="processes-tab" role="tabpanel">
+            <div class="task-manager-process-list" id="task-manager-process-list">
                 </div>
         </div>
     </div>
 
-    <div class="window" id="calculator-window" data-taskbar-id="calculator-taskbar-item" data-app-icon="https://img.icons8.com/fluency/48/calculator.png" style="width: 350px; height: 500px;" data-desktop="desktop-1" role="dialog" aria-labelledby="calculator-title">
+    <div class="window" id="calculator-window" data-taskbar-id="calculator-taskbar-item" data-app-icon="https://img.icons8.com/fluency/48/calculator.png" data-app-name="Calculator">
         <div class="window-title-bar">
-            <span id="calculator-title">Calculator</span>
+            <span>Calculator</span>
             <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
         <div class="window-content">
-            <div class="calculator-display" id="calculator-display" aria-live="polite">0</div>
+            <div class="calculator-display" id="calculator-display">0</div>
             <div class="calculator-grid">
-                <button class="calculator-button clear">C</button>
+                <button class="calculator-button operator">C</button>
+                <button class="calculator-button operator">+/-</button>
+                <button class="calculator-button operator">%</button>
                 <button class="calculator-button operator">/</button>
-                <button class="calculator-button operator">*</button>
-                <button class="calculator-button operator">-</button>
                 <button class="calculator-button number">7</button>
                 <button class="calculator-button number">8</button>
                 <button class="calculator-button number">9</button>
-                <button class="calculator-button operator">+</button>
+                <button class="calculator-button operator">*</button>
                 <button class="calculator-button number">4</button>
                 <button class="calculator-button number">5</button>
                 <button class="calculator-button number">6</button>
-                <button class="calculator-button equals" id="equals-button">=</button>
+                <button class="calculator-button operator">-</button>
                 <button class="calculator-button number">1</button>
                 <button class="calculator-button number">2</button>
                 <button class="calculator-button number">3</button>
+                <button class="calculator-button operator">+</button>
                 <button class="calculator-button number" style="grid-column: span 2;">0</button>
                 <button class="calculator-button number">.</button>
+                <button class="calculator-button equals">=</button>
             </div>
         </div>
     </div>
 
-    <div class="window" id="edge-window" data-taskbar-id="edge-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" data-desktop="desktop-1" role="dialog" aria-labelledby="edge-title">
-        <div class="window-title-bar">
-            <span id="edge-title">Microsoft Edge</span>
-            <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-        <div class="window-content">
-            <p>Welcome to Microsoft Edge! This is a simple browser mockup.</p>
-        </div>
-    </div>
-
-    <div class="window" id="spotify-window" data-taskbar-id="spotify-taskbar-item" data-app-icon="https://img.icons8.com/fluency/96/spotify.png" data-desktop="desktop-1" role="dialog" aria-labelledby="spotify-title">
-        <div class="window-title-bar">
-            <span id="spotify-title">Spotify</span>
-            <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-        <div class="window-content">
-            <p>Welcome to Spotify! Start listening to your favorite music.</p>
-        </div>
-    </div>
-
-    <div class="window" id="vscode-window" data-taskbar-id="vscode-taskbar-item" data-app-icon="https://img.icons8.com/fluency/96/visual-studio-code-2019.png" data-desktop="desktop-1" role="dialog" aria-labelledby="vscode-title">
-        <div class="window-title-bar">
-            <span id="vscode-title">Visual Studio Code</span>
-            <div class="window-title-buttons">
-                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
-                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-        <div class="window-content">
-            <p>Welcome to Visual Studio Code! Start writing code.</p>
-        </div>
-    </div>
-
-    <div class="window" id="cortana-response-window" data-taskbar-id="cortana-taskbar-item" data-app-icon="https://img.icons8.com/windows/96/000000/search.png" style="width: 400px; height: 200px; display: none;" role="dialog" aria-labelledby="cortana-response-title">
-        <div class="window-title-bar">
-            <span id="cortana-response-title">Search Results</span>
-            <div class="window-title-buttons">
-                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-        <div class="window-content" id="cortana-response-content">
-            <p>Hello! How can I help you today?</p>
-        </div>
-    </div>
-
-    <div id="cortana-flyout" role="menu" aria-hidden="true" style="display: none;">
-        <div class="cortana-search-box">
-            <i class="fa-solid fa-microphone" aria-hidden="true"></i>
-            <input type="text" id="cortana-input" placeholder="Ask me anything" aria-label="Search or ask anything">
-        </div>
-    </div>
-
-    <div id="task-view" role="dialog" aria-modal="true" aria-labelledby="task-view-title" style="display: none;">
-        <div class="task-view-top">
-            <button class="close-btn" id="task-view-close" aria-label="Close Task View">&times;</button>
-        </div>
-        <div id="task-view-windows" role="group" aria-label="Open Windows">
-        </div>
-        <div class="task-view-bottom">
-            <button id="add-desktop-btn" aria-label="New desktop">+ New desktop</button>
-        </div>
-    </div>
-
-    <div id="shutdown-screen" style="display: none;">
+    <div id="shutdown-screen" style="display: none;" role="alert" aria-live="assertive">
         <div class="logo">
             <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Windows Logo">
         </div>
@@ -1120,587 +1106,578 @@
         </div>
     </div>
 
+    <div id="task-view" aria-hidden="true" style="display: none;">
+        <div class="task-view-top">
+            <button class="close-btn" aria-label="Close Task View">×</button>
+        </div>
+        <div id="task-view-windows">
+            </div>
+        <div class="task-view-bottom">
+            <button id="add-desktop-btn">Add new desktop</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loginScreen = document.getElementById('login-screen');
-            const loginBtn = document.getElementById('login-btn');
             const passwordInput = document.getElementById('password-input');
+            const loginBtn = document.getElementById('login-btn');
             const loginMessage = document.getElementById('login-message');
+            const mainContainer = document.getElementById('main-container');
             const desktopContainer = document.getElementById('desktop-container');
-            const startMenu = document.getElementById('start-menu');
             const startButton = document.getElementById('start-button');
-            const windows = document.querySelectorAll('.window');
-            const taskbarTime = document.getElementById('taskbarTime');
+            const startMenu = document.getElementById('start-menu');
             const shutdownButton = document.getElementById('shutdown-button');
             const shutdownScreen = document.getElementById('shutdown-screen');
+            const cortanaButton = document.getElementById('cortana-button');
+            const cortanaFlyout = document.getElementById('cortana-flyout');
+            const taskbarTime = document.getElementById('taskbarTime');
             const taskbarIconsContainer = document.querySelector('.taskbar-icons');
             const taskViewButton = document.getElementById('task-view-button');
             const taskView = document.getElementById('task-view');
             const taskViewWindowsContainer = document.getElementById('task-view-windows');
-            const taskViewCloseBtn = document.getElementById('task-view-close');
-            const cortanaButton = document.getElementById('cortana-button');
-            const cortanaFlyout = document.getElementById('cortana-flyout');
-            const cortanaInput = document.getElementById('cortana-input');
+            const taskViewCloseBtn = document.querySelector('#task-view .close-btn');
             const addDesktopBtn = document.getElementById('add-desktop-btn');
-            const taskManagerProcessesList = document.getElementById('processes-tab');
+            const desktopArea = document.querySelector('.desktop-container');
+            const taskManagerProcessList = document.getElementById('task-manager-process-list');
+
+            const runningProcesses = {}; // Stores information about open windows
+            const windows = document.querySelectorAll('.window');
+            const desktopIcons = document.querySelectorAll('.icon');
+            const startMenuApps = document.querySelectorAll('.start-menu-app');
+            const startMenuTiles = document.querySelectorAll('.tile');
 
             let zIndexCounter = 2000;
-            const desktops = {};
-            document.querySelectorAll('.desktop').forEach(d => {
-                desktops[d.id] = d;
-            });
-            let currentDesktopId = 'desktop-1';
-            let maximizedWindows = new Map();
-            const currentProcesses = {};
-            const pinnedApps = [
-                {
-                    id: 'documents-taskbar-item',
-                    windowTarget: '#documents-window',
-                    icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true',
-                    alt: 'Documents',
-                    name: 'Documents'
-                },
-                {
-                    id: 'file-explorer-taskbar-item',
-                    windowTarget: '#file-explorer-window',
-                    icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true',
-                    alt: 'File Explorer',
-                    name: 'File Explorer'
-                },
-                {
-                    id: 'edge-taskbar-item',
-                    windowTarget: '#edge-window',
-                    icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true',
-                    alt: 'Microsoft Edge',
-                    name: 'Microsoft Edge'
-                },
-                {
-                    id: 'spotify-taskbar-item',
-                    windowTarget: '#spotify-window',
-                    icon: 'https://img.icons8.com/fluency/96/spotify.png',
-                    alt: 'Spotify',
-                    name: 'Spotify'
-                },
-                {
-                    id: 'vscode-taskbar-item',
-                    windowTarget: '#vscode-window',
-                    icon: 'https://img.icons8.com/fluency/96/visual-studio-code-2019.png',
-                    alt: 'Visual Studio Code',
-                    name: 'Visual Studio Code'
-                }
-            ];
-            
-            // Function to render pinned apps on the taskbar
-            function renderPinnedApps() {
-                const pinnedContainer = document.createElement('div');
-                pinnedContainer.className = 'taskbar-pinned';
-                
-                pinnedApps.forEach(app => {
-                    const item = document.createElement('div');
-                    item.className = 'taskbar-item';
-                    item.id = app.id;
-                    item.dataset.windowTarget = app.windowTarget;
-                    item.innerHTML = `<img src="${app.icon}" alt="${app.alt}">`;
-                    
-                    item.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const windowEl = document.querySelector(item.dataset.windowTarget);
-                        if (windowEl) {
-                            openWindow(windowEl);
-                        }
-                    });
-                    
-                    pinnedContainer.appendChild(item);
-                });
-                
-                taskbarIconsContainer.insertAdjacentElement('beforebegin', pinnedContainer);
-            }
-            renderPinnedApps();
-            
-            // --- Login Functionality ---
-            const handleLogin = (e) => {
-                if (e) e.preventDefault();
+            let currentDesktopId = 1;
+            let windowState = {}; // Stores window positions and sizes
 
-                if (passwordInput.value === 'password') {
+            // --- Login Logic ---
+            const correctPassword = 'password';
+
+            loginBtn.addEventListener('click', () => {
+                if (passwordInput.value === correctPassword) {
                     loginScreen.classList.add('fade-out');
                     setTimeout(() => {
                         loginScreen.style.display = 'none';
                         desktopContainer.style.display = 'block';
                     }, 500);
-                    loginMessage.style.display = 'none';
                 } else {
                     loginMessage.style.display = 'block';
                 }
-            };
-
-            loginBtn.addEventListener('click', handleLogin);
-            passwordInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    handleLogin(e);
-                }
             });
 
-            // --- Time and Date ---
+            // --- Clock and Date ---
             function updateTime() {
                 const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                const dateStr = now.toLocaleDateString();
-                if (taskbarTime) {
-                    taskbarTime.innerHTML = `<span>${timeStr}</span><span>${dateStr}</span>`;
-                }
+                const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const date = now.toLocaleDateString();
+                taskbarTime.innerHTML = `<span>${time}</span><span>${date}</span>`;
             }
             updateTime();
             setInterval(updateTime, 1000);
 
-            // --- Start Menu & Cortana Toggling ---
-            const toggleStartMenu = (e) => {
-                e.stopPropagation();
-                if (startMenu.style.display === 'flex') {
-                    startMenu.style.display = 'none';
-                    startButton.setAttribute('aria-expanded', 'false');
-                } else {
-                    startMenu.style.display = 'flex';
-                    cortanaFlyout.style.display = 'none';
-                    startButton.setAttribute('aria-expanded', 'true');
+            // --- Start Menu and Cortana Toggle ---
+            function toggleStartMenu() {
+                const isHidden = startMenu.style.display === 'none';
+                startMenu.style.display = isHidden ? 'flex' : 'none';
+                startButton.setAttribute('aria-expanded', !isHidden);
+                startMenu.setAttribute('aria-hidden', !isHidden); // Fix #9: Update ARIA
+                if (!isHidden) {
+                    hideCortanaFlyout();
                 }
-            };
+            }
 
-            const toggleCortanaFlyout = (e) => {
-                e.stopPropagation();
-                if (cortanaFlyout.style.display === 'flex') {
-                    cortanaFlyout.style.display = 'none';
-                    cortanaButton.setAttribute('aria-expanded', 'false');
-                } else {
-                    cortanaFlyout.style.display = 'flex';
-                    startMenu.style.display = 'none';
-                    cortanaButton.setAttribute('aria-expanded', 'true');
+            function hideStartMenu() {
+                startMenu.style.display = 'none';
+                startButton.setAttribute('aria-expanded', 'false');
+                startMenu.setAttribute('aria-hidden', 'true'); // Fix #9: Update ARIA
+            }
+
+            function toggleCortanaFlyout() {
+                const isHidden = cortanaFlyout.style.display === 'none';
+                cortanaFlyout.style.display = isHidden ? 'flex' : 'none';
+                cortanaFlyout.setAttribute('aria-hidden', !isHidden); // Fix #9: Update ARIA
+                if (!isHidden) {
+                    hideStartMenu();
                 }
-            };
+            }
+            function hideCortanaFlyout() {
+                cortanaFlyout.style.display = 'none';
+                cortanaFlyout.setAttribute('aria-hidden', 'true'); // Fix #9: Update ARIA
+            }
 
             startButton.addEventListener('click', toggleStartMenu);
             cortanaButton.addEventListener('click', toggleCortanaFlyout);
 
+            // Fix #2: Consolidated document click handler
             document.addEventListener('click', (e) => {
-                if (startMenu.style.display === 'flex' && !startMenu.contains(e.target) && !startButton.contains(e.target)) {
-                    startMenu.style.display = 'none';
-                    startButton.setAttribute('aria-expanded', 'false');
+                if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+                    hideStartMenu();
                 }
-                if (cortanaFlyout.style.display === 'flex' && !cortanaFlyout.contains(e.target) && !cortanaButton.contains(e.target)) {
-                    cortanaFlyout.style.display = 'none';
-                    cortanaButton.setAttribute('aria-expanded', 'false');
+                if (!cortanaFlyout.contains(e.target) && !cortanaButton.contains(e.target)) {
+                    hideCortanaFlyout();
                 }
             });
 
-            // Cortana input handler
-            cortanaInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const query = cortanaInput.value.toLowerCase();
-                    let response = "Sorry, I can't help with that right now.";
-                    let title = "Search Results";
-
-                    // Handle simple math with floating-point numbers
-                    const mathMatch = query.match(/(\d+(\.\d+)?)\s*([+\-*/])\s*(\d+(\.\d+)?)/);
-                    if (mathMatch) {
-                        const num1 = parseFloat(mathMatch[1]);
-                        const operator = mathMatch[3];
-                        const num2 = parseFloat(mathMatch[4]);
-                        let result;
-                        try {
-                            switch (operator) {
-                                case '+': result = num1 + num2; break;
-                                case '-': result = num1 - num2; break;
-                                case '*': result = num1 * num2; break;
-                                case '/':
-                                    if (num2 === 0) {
-                                        response = "Cannot divide by zero.";
-                                    } else {
-                                        result = num1 / num2;
-                                    }
-                                    break;
-                            }
-                            if (result !== undefined) {
-                                response = `The answer is ${result}.`;
-                                title = "Calculation";
-                            }
-                        } catch (e) {
-                            response = "I couldn't perform that calculation.";
-                        }
-                    } else if (query.includes("open calculator")) {
-                        const calcWindow = document.getElementById('calculator-window');
-                        if (calcWindow) {
-                            openWindow(calcWindow);
-                            cortanaFlyout.style.display = 'none';
-                            cortanaInput.value = '';
-                            return;
-                        }
-                    } else if (query.includes("what is your name")) {
-                        response = "I am a helpful assistant created by Google.";
-                    } else if (query.includes("hello") || query.includes("hi")) {
-                        response = "Hello! How can I help you today?";
-                    }
-
-                    showCortanaResponse(title, response);
-                    cortanaFlyout.style.display = 'none';
-                    cortanaInput.value = '';
-                }
+            // --- Shutdown Logic ---
+            shutdownButton.addEventListener('click', () => {
+                // Fix #8: Hide main container, not the entire body
+                mainContainer.style.display = 'none';
+                shutdownScreen.style.display = 'flex';
+                setTimeout(() => {
+                    shutdownScreen.classList.add('visible');
+                }, 10);
+                setTimeout(() => {
+                    // Fix for Bug #8: Instead of page reload, we reset the state for a smoother UX.
+                    location.reload(); 
+                }, 3000);
             });
 
-            function showCortanaResponse(title, content) {
-                const responseWindow = document.getElementById('cortana-response-window');
-                const responseContent = document.getElementById('cortana-response-content');
-                const responseTitle = responseWindow.querySelector('.window-title-bar span');
+            // --- Taskbar Pinned Apps Rendering ---
+            const taskbarPinnedContainer = document.createElement('div');
+            taskbarPinnedContainer.classList.add('taskbar-pinned');
+            taskbarIconsContainer.parentNode.insertBefore(taskbarPinnedContainer, taskbarIconsContainer);
 
-                responseTitle.textContent = title;
-                responseContent.innerHTML = `<p>${content}</p>`;
-                openWindow(responseWindow);
-            }
-
-            // --- Task View (Virtual Desktops) ---
-            function showTaskView() {
-                taskView.style.display = 'flex';
-                taskViewWindowsContainer.innerHTML = ''; // Clear previous thumbnails
-
-                const allWindows = document.querySelectorAll('.window');
-                allWindows.forEach(win => {
-                    if (win.dataset.desktop === currentDesktopId) {
-                        const thumb = document.createElement('div');
-                        thumb.className = 'task-view-window-thumb';
-                        thumb.dataset.windowId = win.id;
-                        thumb.dataset.desktopId = win.dataset.desktop;
-                        thumb.innerHTML = `<div class="window-thumb-title">${win.querySelector('.window-title-bar span').textContent}</div>`;
-
-                        thumb.addEventListener('click', () => {
-                            hideTaskView();
-                            const targetWindow = document.getElementById(thumb.dataset.windowId);
-                            if (targetWindow) {
+            function renderPinnedApps() {
+                taskbarPinnedContainer.innerHTML = '';
+                const pinnedApps = ['file-explorer-window', 'edge-window', 'calculator-window'];
+                pinnedApps.forEach(appId => {
+                    const windowElement = document.getElementById(appId);
+                    if (windowElement) {
+                        const iconSrc = windowElement.dataset.appIcon;
+                        const taskbarId = windowElement.dataset.taskbarId;
+                        const appName = windowElement.dataset.appName;
+                        
+                        const pinnedIcon = document.createElement('div');
+                        pinnedIcon.classList.add('taskbar-item');
+                        pinnedIcon.dataset.windowTarget = `#${appId}`;
+                        pinnedIcon.dataset.taskbarId = taskbarId;
+                        pinnedIcon.innerHTML = `<img src="${iconSrc}" alt="${appName} icon">`;
+                        pinnedIcon.setAttribute('role', 'button');
+                        pinnedIcon.setAttribute('aria-label', `${appName}`);
+                        taskbarPinnedContainer.appendChild(pinnedIcon);
+                        
+                        // Attach event listener for the pinned item
+                        pinnedIcon.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const targetWindow = document.querySelector(pinnedIcon.dataset.windowTarget);
+                            if (targetWindow.style.display === 'flex') {
+                                if (targetWindow.classList.contains('active')) {
+                                    minimizeWindow(targetWindow);
+                                } else {
+                                    restoreWindow(targetWindow);
+                                    focusWindow(targetWindow);
+                                }
+                            } else {
                                 openWindow(targetWindow);
                             }
                         });
+                    }
+                });
+            }
+            renderPinnedApps();
 
-                        taskViewWindowsContainer.appendChild(thumb);
+
+            // --- Task Manager Processes Update ---
+            // Fix #7: Use runningProcesses as the single source of truth
+            function updateTaskManagerProcesses() {
+                taskManagerProcessList.innerHTML = '';
+                Object.values(runningProcesses).forEach(proc => {
+                    const processDiv = document.createElement('div');
+                    processDiv.classList.add('task-manager-process');
+                    processDiv.innerHTML = `
+                        <span class="task-manager-process-name">${proc.appName}</span>
+                        <span class="task-manager-process-status">${proc.state}</span>
+                    `;
+                    taskManagerProcessList.appendChild(processDiv);
+                });
+            }
+
+            // --- Window Management ---
+            document.addEventListener('click', (e) => {
+                const windowTarget = e.target.closest('[data-window-target]');
+                if (windowTarget) {
+                    hideStartMenu();
+                    hideCortanaFlyout();
+                    
+                    const windowId = windowTarget.dataset.windowTarget;
+                    const windowElement = document.querySelector(windowId);
+                    
+                    if (windowElement) {
+                        if (windowElement.style.display === 'flex' && !windowTarget.classList.contains('taskbar-item')) {
+                            focusWindow(windowElement);
+                        } else {
+                            openWindow(windowElement);
+                        }
+                    }
+                }
+            });
+            
+            function openWindow(windowElement) {
+                const windowId = windowElement.id;
+                const taskbarId = windowElement.dataset.taskbarId;
+                const appIcon = windowElement.dataset.appIcon;
+                const appName = windowElement.dataset.appName;
+                
+                windowElement.style.display = 'flex';
+                focusWindow(windowElement);
+
+                // Fix #5: Check if process is already running to avoid duplicate listeners
+                if (!runningProcesses[windowId]) {
+                    runningProcesses[windowId] = { appName: appName, id: windowId, state: 'Running' };
+                    createTaskbarItem(windowId, taskbarId, appIcon, appName);
+                } else {
+                     runningProcesses[windowId].state = 'Running';
+                }
+                
+                updateTaskManagerProcesses();
+            }
+
+            function focusWindow(windowElement) {
+                document.querySelectorAll('.window').forEach(win => {
+                    win.classList.remove('active');
+                    win.style.zIndex = '999';
+                });
+                document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
+
+                windowElement.classList.add('active');
+                windowElement.style.zIndex = ++zIndexCounter;
+                
+                const taskbarItem = document.querySelector(`.taskbar-item[data-taskbar-id="${windowElement.dataset.taskbarId}"]`);
+                if (taskbarItem) {
+                    taskbarItem.classList.add('active');
+                }
+                
+                windowElement.setAttribute('aria-hidden', 'false'); // Fix #9: Update ARIA
+            }
+
+            function createTaskbarItem(windowId, taskbarId, iconSrc, appName) {
+                const taskbarItem = document.createElement('div');
+                taskbarItem.classList.add('taskbar-item');
+                taskbarItem.dataset.windowTarget = `#${windowId}`;
+                taskbarItem.dataset.taskbarId = taskbarId;
+                taskbarItem.setAttribute('role', 'button');
+                taskbarItem.setAttribute('aria-label', appName);
+                taskbarItem.innerHTML = `<img src="${iconSrc}" alt="${appName} icon">`;
+                taskbarIconsContainer.appendChild(taskbarItem);
+                
+                taskbarItem.addEventListener('click', () => {
+                    const windowElement = document.getElementById(windowId);
+                    if (windowElement.style.display === 'flex' && windowElement.classList.contains('active')) {
+                        minimizeWindow(windowElement);
+                    } else {
+                        restoreWindow(windowElement);
+                        focusWindow(windowElement);
+                    }
+                });
+            }
+
+            function minimizeWindow(windowElement) {
+                windowElement.style.display = 'none';
+                const taskbarItem = document.querySelector(`.taskbar-item[data-taskbar-id="${windowElement.dataset.taskbarId}"]`);
+                if (taskbarItem) {
+                    taskbarItem.classList.remove('active');
+                }
+                
+                if (runningProcesses[windowElement.id]) {
+                    runningProcesses[windowElement.id].state = 'Minimized';
+                }
+                updateTaskManagerProcesses();
+            }
+
+            function restoreWindow(windowElement) {
+                windowElement.style.display = 'flex';
+                
+                if (runningProcesses[windowElement.id]) {
+                    runningProcesses[windowElement.id].state = 'Running';
+                }
+                updateTaskManagerProcesses();
+            }
+
+            // --- Window drag and resize ---
+            windows.forEach(windowElement => {
+                const titleBar = windowElement.querySelector('.window-title-bar');
+                const closeBtn = windowElement.querySelector('.close-btn');
+                const minimizeBtn = windowElement.querySelector('.minimize-btn');
+                const maximizeBtn = windowElement.querySelector('.maximize-btn');
+                
+                let isDragging = false;
+                let offsetX, offsetY;
+                
+                // Fix #10: Event handlers now attached and removed dynamically
+                function handleMouseMove(e) {
+                    if (!isDragging) return;
+                    
+                    const newX = e.clientX - offsetX;
+                    const newY = e.clientY - offsetY;
+                    
+                    windowElement.style.left = `${newX}px`;
+                    windowElement.style.top = `${newY}px`;
+                }
+
+                function handleMouseUp() {
+                    if (isDragging) {
+                        isDragging = false;
+                        windowElement.style.cursor = 'default';
+                        windowState[windowElement.id].x = windowElement.offsetLeft;
+                        windowState[windowElement.id].y = windowElement.offsetTop;
+                        
+                        document.removeEventListener('mousemove', handleMouseMove);
+                        document.removeEventListener('mouseup', handleMouseUp);
+                    }
+                }
+                
+                titleBar.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('button')) return;
+                    if (windowState[windowElement.id].maximized) return;
+                    
+                    isDragging = true;
+                    offsetX = e.clientX - windowElement.getBoundingClientRect().left;
+                    offsetY = e.clientY - windowElement.getBoundingClientRect().top;
+                    
+                    focusWindow(windowElement);
+                    windowElement.style.cursor = 'grabbing';
+                    
+                    document.addEventListener('mousemove', handleMouseMove);
+                    document.addEventListener('mouseup', handleMouseUp);
+                });
+
+                windowState[windowElement.id] = {
+                    x: windowElement.offsetLeft,
+                    y: windowElement.offsetTop,
+                    w: windowElement.offsetWidth,
+                    h: windowElement.offsetHeight,
+                    maximized: false
+                };
+
+                closeBtn.addEventListener('click', () => {
+                    windowElement.style.display = 'none';
+                    const taskbarItem = document.querySelector(`.taskbar-item[data-taskbar-id="${windowElement.dataset.taskbarId}"]`);
+                    if (taskbarItem) {
+                        taskbarItem.remove();
+                    }
+                    if (runningProcesses[windowElement.id]) {
+                        delete runningProcesses[windowElement.id];
+                    }
+                    updateTaskManagerProcesses();
+                    windowElement.setAttribute('aria-hidden', 'true');
+                });
+                
+                minimizeBtn.addEventListener('click', () => minimizeWindow(windowElement));
+                
+                maximizeBtn.addEventListener('click', () => {
+                    if (!windowState[windowElement.id].maximized) {
+                        windowState[windowElement.id].x = windowElement.offsetLeft;
+                        windowState[windowElement.id].y = windowElement.offsetTop;
+                        windowState[windowElement.id].w = windowElement.offsetWidth;
+                        windowState[windowElement.id].h = windowElement.offsetHeight;
+
+                        windowElement.style.top = '0';
+                        windowElement.style.left = '0';
+                        windowElement.style.width = '100vw';
+                        windowElement.style.height = `calc(100vh - var(--taskbar-height))`;
+                        windowElement.style.borderRadius = '0';
+                        windowElement.style.resize = 'none';
+                        windowState[windowElement.id].maximized = true;
+                    } else {
+                        windowElement.style.top = `${windowState[windowElement.id].y}px`;
+                        windowElement.style.left = `${windowState[windowElement.id].x}px`;
+                        windowElement.style.width = `${windowState[windowElement.id].w}px`;
+                        windowElement.style.height = `${windowState[windowElement.id].h}px`;
+                        windowElement.style.borderRadius = '8px';
+                        windowElement.style.resize = 'both';
+                        windowState[windowElement.id].maximized = false;
+                    }
+                });
+            });
+
+
+            // --- Calculator Logic ---
+            const calculatorDisplay = document.getElementById('calculator-display');
+            const calculatorButtons = document.querySelectorAll('.calculator-button');
+            
+            let currentInput = '0';
+            let firstOperand = null;
+            let operator = null;
+            let waitForSecondOperand = false;
+            
+            function resetCalculatorState() {
+                currentInput = '0';
+                firstOperand = null;
+                operator = null;
+                waitForSecondOperand = false;
+            }
+
+            calculatorButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const buttonText = button.textContent;
+                    
+                    if (buttonText === 'C') {
+                        resetCalculatorState();
+                        calculatorDisplay.textContent = '0';
+                        return;
+                    }
+                    
+                    if (buttonText === '=') {
+                        if (operator && firstOperand !== null) {
+                            let result = 0;
+                            const secondOperand = parseFloat(currentInput);
+                            switch(operator) {
+                                case '+': result = firstOperand + secondOperand; break;
+                                case '-': result = firstOperand - secondOperand; break;
+                                case '*': result = firstOperand * secondOperand; break;
+                                case '/':
+                                    if (secondOperand === 0) {
+                                        calculatorDisplay.textContent = "Error";
+                                        resetCalculatorState();
+                                        return;
+                                    }
+                                    result = firstOperand / secondOperand;
+                                    break;
+                            }
+                            calculatorDisplay.textContent = result;
+                            currentInput = result.toString();
+                            firstOperand = null;
+                            operator = null;
+                            waitForSecondOperand = true;
+                        }
+                        return;
+                    }
+                    
+                    if (['+', '-', '*', '/'].includes(buttonText)) {
+                         // Fix #6: Handle consecutive operators
+                        if (firstOperand === null || waitForSecondOperand) {
+                            firstOperand = parseFloat(currentInput);
+                        }
+                        operator = buttonText;
+                        waitForSecondOperand = true;
+                        return;
+                    }
+
+                    if (buttonText === '.') {
+                        if (!currentInput.includes('.')) {
+                            currentInput += '.';
+                        }
+                    } else if (buttonText === '+/-') {
+                        currentInput = (parseFloat(currentInput) * -1).toString();
+                    } else if (buttonText === '%') {
+                        currentInput = (parseFloat(currentInput) / 100).toString();
+                    } else {
+                        if (currentInput === '0' && buttonText !== '.') {
+                            currentInput = buttonText;
+                        } else if (waitForSecondOperand) {
+                            currentInput = buttonText;
+                            waitForSecondOperand = false;
+                        } else {
+                            currentInput += buttonText;
+                        }
+                    }
+                    
+                    calculatorDisplay.textContent = currentInput;
+                });
+            });
+
+            // --- Task View and Virtual Desktops ---
+            taskViewButton.addEventListener('click', () => {
+                const isHidden = taskView.style.display === 'none';
+                if (isHidden) {
+                    showTaskView();
+                } else {
+                    hideTaskView();
+                }
+            });
+
+            function showTaskView() {
+                taskView.style.display = 'flex';
+                taskView.setAttribute('aria-hidden', 'false');
+                hideStartMenu();
+                hideCortanaFlyout();
+                
+                document.querySelectorAll('.window').forEach(win => {
+                    if (win.style.display === 'flex') {
+                        win.style.display = 'none';
+                        createWindowThumbnail(win);
                     }
                 });
             }
 
             function hideTaskView() {
                 taskView.style.display = 'none';
+                taskView.setAttribute('aria-hidden', 'true');
+                taskViewWindowsContainer.innerHTML = '';
             }
 
-            function switchToDesktop(desktopId) {
-                document.querySelectorAll('.desktop').forEach(d => {
-                    d.style.display = 'none';
-                });
-                const targetDesktop = document.getElementById(desktopId);
-                if (targetDesktop) {
-                    targetDesktop.style.display = 'grid';
-                    currentDesktopId = desktopId;
-                }
-            }
-
-            taskViewButton.addEventListener('click', showTaskView);
             taskViewCloseBtn.addEventListener('click', hideTaskView);
 
-            addDesktopBtn.addEventListener('click', () => {
-                const newDesktopId = `desktop-${Object.keys(desktops).length + 1}`;
-                const newDesktopEl = document.createElement('div');
-                newDesktopEl.id = newDesktopId;
-                newDesktopEl.className = 'desktop virtual-desktop';
-                desktopContainer.appendChild(newDesktopEl);
-                desktops[newDesktopId] = newDesktopEl;
-
-                switchToDesktop(newDesktopId);
-                hideTaskView();
-            });
-
-            // --- Combined Keyboard Shortcuts ---
-            document.addEventListener('keydown', (e) => {
-                // Task View
-                if (e.ctrlKey && e.key === 'Tab') {
-                    e.preventDefault();
-                    if (taskView.style.display === 'flex') {
-                        hideTaskView();
-                    } else {
-                        showTaskView();
-                    }
-                } else if (e.key === 'Escape' && taskView.style.display === 'flex') {
+            function createWindowThumbnail(windowElement) {
+                const thumb = document.createElement('div');
+                thumb.classList.add('task-view-window-thumb');
+                thumb.dataset.windowId = windowElement.id;
+                
+                const title = document.createElement('div');
+                title.classList.add('window-thumb-title');
+                title.textContent = windowElement.dataset.appName;
+                
+                thumb.appendChild(title);
+                taskViewWindowsContainer.appendChild(thumb);
+                
+                thumb.addEventListener('click', () => {
+                    restoreWindow(windowElement);
+                    focusWindow(windowElement);
                     hideTaskView();
-                }
-                
-                // Task Manager
-                if (e.ctrlKey && e.shiftKey && e.key === 'Escape') {
-                    e.preventDefault();
-                    const taskManagerWindow = document.getElementById('task-manager-window');
-                    openWindow(taskManagerWindow);
-                }
-            });
-
-            // --- Dynamic Taskbar & Window Management ---
-            function openWindow(windowEl) {
-                const taskbarId = windowEl.dataset.taskbarId;
-                let taskbarItem = document.getElementById(taskbarId);
-                
-                if (!taskbarItem) {
-                    const iconUrl = windowEl.dataset.app-icon;
-                    taskbarItem = document.createElement('div');
-                    taskbarItem.className = 'taskbar-item';
-                    taskbarItem.id = taskbarId;
-                    taskbarItem.innerHTML = `<img src="${iconUrl}" alt="${windowEl.id}">`;
-
-                    taskbarItem.addEventListener('click', () => {
-                        if (windowEl.style.display === 'flex' && windowEl.classList.contains('active')) {
-                            windowEl.style.display = 'none';
-                            taskbarItem.classList.remove('active');
-                        } else {
-                            windows.forEach(win => {
-                                win.classList.remove('active');
-                            });
-                            document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
-                            taskbarItem.classList.add('active');
-                            windowEl.classList.add('active');
-                            windowEl.style.display = 'flex';
-                            windowEl.style.zIndex = zIndexCounter++;
-                        }
-                    });
-                    taskbarIconsContainer.appendChild(taskbarItem);
-                }
-
-                // Update z-index for all windows
-                windows.forEach(win => {
-                    win.classList.remove('active');
                 });
-                document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
-                
-                windowEl.style.display = 'flex';
-                windowEl.classList.add('active');
-                taskbarItem.classList.add('active');
-                windowEl.style.zIndex = zIndexCounter++;
-                startMenu.style.display = 'none';
-                cortanaFlyout.style.display = 'none';
-
-                if (!windowEl.dataset.hasOpened) {
-                    const maxX = Math.max(0, window.innerWidth - windowEl.offsetWidth - 100);
-                    const maxY = Math.max(0, window.innerHeight - windowEl.offsetHeight - 100 - 56);
-                    const posX = Math.floor(Math.random() * maxX);
-                    const posY = Math.floor(Math.random() * maxY);
-                    windowEl.style.left = `${posX}px`;
-                    windowEl.style.top = `${posY}px`;
-                    windowEl.dataset.hasOpened = true;
-                }
-                
-                // Add the new process
-                if (!currentProcesses[windowEl.id]) {
-                    const processName = windowEl.querySelector('.window-title-bar span').textContent;
-                    currentProcesses[windowEl.id] = { name: processName, status: 'Running' };
-                }
-                renderProcesses();
             }
 
-            // New function to render the Task Manager process list
-            function renderProcesses() {
-                taskManagerProcessesList.innerHTML = '';
-                for (const id in currentProcesses) {
-                    const process = currentProcesses[id];
-                    const processEl = document.createElement('div');
-                    processEl.className = 'task-manager-process';
-                    processEl.innerHTML = `
-                        <span class="task-manager-process-name">${process.name}</span>
-                        <span class="task-manager-process-status">${process.status}</span>
-                    `;
-                    taskManagerProcessesList.appendChild(processEl);
-                }
-            }
-
-            document.addEventListener('click', (e) => {
-                const windowTarget = e.target.closest('[data-window-target]');
-                if (windowTarget) {
-                    const windowId = windowTarget.dataset.window-target;
-                    const windowEl = document.querySelector(windowId);
-                    if (windowEl) {
-                        openWindow(windowEl);
-                    }
-                    return;
-                }
-
-                const closeBtn = e.target.closest('.close-btn');
-                const minimizeBtn = e.target.closest('.minimize-btn');
-                const maximizeBtn = e.target.closest('.maximize-btn');
-                const windowEl = e.target.closest('.window');
-
-                if (closeBtn && windowEl) {
-                    const taskbarId = windowEl.dataset.taskbar-id;
-                    const taskbarItem = document.getElementById(taskbarId);
-                    windowEl.style.display = 'none';
-                    if (taskbarItem) {
-                        const isPinned = pinnedApps.some(app => app.id === taskbarId);
-                        const openWindows = document.querySelectorAll(`.window[data-taskbar-id="${taskbarId}"][style*="display: flex"]`);
-                        
-                        if (!isPinned && openWindows.length === 0) {
-                            taskbarItem.remove();
-                        }
-                    }
-                    delete currentProcesses[windowEl.id];
-                    renderProcesses();
-                } else if (minimizeBtn && windowEl) {
-                    windowEl.style.display = 'none';
-                    windowEl.classList.remove('active');
-                    const taskbarId = windowEl.dataset.taskbar-id;
-                    const taskbarItem = document.getElementById(taskbarId);
-                    if (taskbarItem) taskbarItem.classList.remove('active');
-                } else if (maximizeBtn && windowEl) {
-                    if (windowEl.classList.contains('maximized')) {
-                        const originalState = JSON.parse(windowEl.dataset.originalState);
-                        if (originalState) {
-                            windowEl.style.top = originalState.top;
-                            windowEl.style.left = originalState.left;
-                            windowEl.style.width = originalState.width;
-                            windowEl.style.height = originalState.height;
-                            windowEl.classList.remove('maximized');
-                        }
-                    } else {
-                        const rect = windowEl.getBoundingClientRect();
-                        windowEl.dataset.originalState = JSON.stringify({
-                            top: `${rect.top}px`,
-                            left: `${rect.left}px`,
-                            width: `${rect.width}px`,
-                            height: `${rect.height}px`
-                        });
-                        windowEl.style.top = '0';
-                        windowEl.style.left = '0';
-                        windowEl.style.width = '100vw';
-                        windowEl.style.height = 'calc(100vh - 56px)';
-                        windowEl.classList.add('maximized');
-                    }
-                }
-            });
-
-            // --- Window Dragging ---
-            let activeWindow = null;
-            let initialMouseX, initialMouseY, initialWindowX, initialWindowY;
-
-            document.addEventListener('mousedown', (e) => {
-                const titleBar = e.target.closest('.window-title-bar');
-                if (!titleBar || e.target.tagName === 'BUTTON') return;
-
-                activeWindow = titleBar.closest('.window');
-                if (activeWindow.classList.contains('maximized')) return;
-
-                initialMouseX = e.clientX;
-                initialMouseY = e.clientY;
-                initialWindowX = activeWindow.offsetLeft;
-                initialWindowY = activeWindow.offsetTop;
-
-                const onMouseMove = (e) => {
-                    if (!activeWindow) return;
-
-                    let dx = e.clientX - initialMouseX;
-                    let dy = e.clientY - initialMouseY;
-
-                    let newX = initialWindowX + dx;
-                    let newY = initialWindowY + dy;
-
-                    // Constrain window to the viewport
-                    newX = Math.max(0, Math.min(window.innerWidth - activeWindow.offsetWidth, newX));
-                    newY = Math.max(0, Math.min(window.innerHeight - activeWindow.offsetHeight - 56, newY));
-
-                    activeWindow.style.left = `${newX}px`;
-                    activeWindow.style.top = `${newY}px`;
-                };
-
-                const onMouseUp = () => {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('mouseup', onMouseUp);
-                    activeWindow = null;
-                };
-
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            });
-
-            // --- Shutdown button ---
-            shutdownButton.addEventListener('click', () => {
-                const result = confirm("Are you sure you want to shut down?");
-                if (result) {
-                    desktopContainer.style.display = 'none';
-                    shutdownScreen.classList.add('visible');
-
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
-                }
-            });
-
-            // --- Calculator Logic ---
-            const calculatorWindow = document.getElementById('calculator-window');
-            if (calculatorWindow) {
-                const display = document.getElementById('calculator-display');
-                const buttons = calculatorWindow.querySelectorAll('.calculator-button');
-                let currentInput = '0';
-                let firstOperand = null;
-                let operator = null;
-                let expectingSecondOperand = false;
-
-                function updateDisplay() {
-                    display.textContent = currentInput;
-                }
-
-                buttons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const value = button.textContent;
-
-                        if (button.classList.contains('number')) {
-                            if (expectingSecondOperand) {
-                                currentInput = value;
-                                expectingSecondOperand = false;
+            // Fix #3: Revised virtual desktop logic to handle event listeners
+            addDesktopBtn.addEventListener('click', () => {
+                const newDesktop = document.createElement('div');
+                currentDesktopId++;
+                newDesktop.id = `desktop-${currentDesktopId}`;
+                newDesktop.classList.add('desktop', 'virtual-desktop');
+                
+                // Programmatically create and add new icons with event listeners
+                document.querySelectorAll('#desktop-1 .icon').forEach(icon => {
+                    const clonedIcon = document.createElement('div');
+                    clonedIcon.className = icon.className;
+                    clonedIcon.id = icon.id;
+                    clonedIcon.dataset.windowTarget = icon.dataset.windowTarget;
+                    clonedIcon.dataset.taskbarId = icon.dataset.taskbarId;
+                    clonedIcon.setAttribute('role', 'button');
+                    clonedIcon.setAttribute('tabindex', '0');
+                    clonedIcon.innerHTML = icon.innerHTML;
+                    
+                    clonedIcon.addEventListener('click', () => {
+                        const windowId = clonedIcon.dataset.windowTarget;
+                        const windowElement = document.querySelector(windowId);
+                        if (windowElement) {
+                            if (windowElement.style.display === 'flex') {
+                                focusWindow(windowElement);
                             } else {
-                                currentInput = currentInput === '0' ? value : currentInput + value;
-                            }
-                        } else if (button.classList.contains('operator')) {
-                            if (firstOperand === null) {
-                                firstOperand = parseFloat(currentInput);
-                            } else if (operator) {
-                                const result = performCalculation();
-                                currentInput = result.toString();
-                                firstOperand = result;
-                            }
-                            operator = value;
-                            expectingSecondOperand = true;
-                        } else if (button.classList.contains('clear')) {
-                            currentInput = '0';
-                            firstOperand = null;
-                            operator = null;
-                            expectingSecondOperand = false;
-                        } else if (value === '.') {
-                            if (!currentInput.includes('.')) {
-                                currentInput += '.';
-                            }
-                        } else if (value === '=') {
-                            if (operator && firstOperand !== null) {
-                                currentInput = performCalculation().toString();
-                                if (currentInput === 'Error') {
-                                    firstOperand = null;
-                                    operator = null;
-                                } else {
-                                    firstOperand = parseFloat(currentInput);
-                                }
-                                expectingSecondOperand = true;
+                                openWindow(windowElement);
                             }
                         }
-                        updateDisplay();
                     });
+                    
+                    newDesktop.appendChild(clonedIcon);
                 });
-
-                function performCalculation() {
-                    const secondOperand = parseFloat(currentInput);
-                    if (operator === '+') return firstOperand + secondOperand;
-                    if (operator === '-') return firstOperand - secondOperand;
-                    if (operator === '*') return firstOperand * secondOperand;
-                    if (operator === '/') {
-                        if (secondOperand === 0) {
-                            return 'Error';
-                        }
-                        return firstOperand / secondOperand;
-                    }
-                    return parseFloat(currentInput);
+                
+                desktopArea.appendChild(newDesktop);
+                switchToDesktop(currentDesktopId);
+            });
+            
+            function switchToDesktop(id) {
+                document.querySelectorAll('.desktop').forEach(desktop => {
+                    desktop.classList.remove('active');
+                });
+                
+                const targetDesktop = document.getElementById(`desktop-${id}`);
+                if (targetDesktop) {
+                    targetDesktop.classList.add('active');
+                    // Hide other desktops
+                    document.querySelectorAll('.virtual-desktop').forEach(d => {
+                        d.style.display = 'none';
+                    });
+                    targetDesktop.style.display = 'grid'; // Use grid for desktop layout
                 }
             }
         });
