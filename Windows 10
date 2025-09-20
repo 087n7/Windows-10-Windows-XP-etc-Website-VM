@@ -202,26 +202,27 @@
         .taskbar-start:hover {
             background: rgba(255, 255, 255, 0.1);
         }
-
+        
+        /* Updated Search Box Styles */
         .taskbar-search {
             margin-left: 10px;
             display: flex;
             align-items: center;
-            background: #333;
-            border: 1px solid #555;
+            background: white; /* Changed to white */
+            border: 1px solid #ccc; /* Lighter border for contrast */
             padding: 8px 16px;
             min-width: 250px;
             height: 38px;
         }
 
         .taskbar-search i {
-            color: #999;
+            color: #555; /* Changed to a darker color for contrast */
             margin-right: 10px;
         }
 
         .taskbar-search input {
             background: transparent;
-            color: var(--text-color-light);
+            color: #000; /* Changed to black for contrast */
             border: none;
             width: 100%;
             font-size: 16px;
@@ -229,10 +230,17 @@
         }
 
         .taskbar-search input::placeholder {
-            color: #777;
+            color: #555; /* Changed to a darker color for contrast */
         }
+        /* End of Updated Search Box Styles */
 
         .taskbar-icons {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+        
+        .taskbar-pinned {
             display: flex;
             align-items: center;
             margin-left: 10px;
@@ -827,12 +835,24 @@
     <div class="desktop-container" id="desktop-container" style="display: none;">
         <div class="desktop active" id="desktop-1">
             <div class="icon" id="documents-icon" data-window-target="#documents-window" data-taskbar-id="documents-taskbar-item" role="button" tabindex="0">
-                <img src="https://img.icons8.com/windows/96/000000/folder-invoices.png" alt="Documents icon">
+                <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" alt="Documents icon">
                 <span>Documents</span>
             </div>
             <div class="icon" id="file-explorer-icon" data-window-target="#file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" role="button" tabindex="0">
-                <img src="https://img.icons8.com/color/96/000000/file-explorer.png" alt="File Explorer icon">
+                <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" alt="File Explorer icon">
                 <span>File Explorer</span>
+            </div>
+            <div class="icon" id="edge-icon" data-window-target="#edge-window" data-taskbar-id="edge-taskbar-item" role="button" tabindex="0">
+                <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" alt="Microsoft Edge icon">
+                <span>Microsoft Edge</span>
+            </div>
+            <div class="icon" id="spotify-icon" data-window-target="#spotify-window" data-taskbar-id="spotify-taskbar-item" role="button" tabindex="0">
+                <img src="https://img.icons8.com/fluency/96/spotify.png" alt="Spotify icon">
+                <span>Spotify</span>
+            </div>
+            <div class="icon" id="vscode-icon" data-window-target="#vscode-window" data-taskbar-id="vscode-taskbar-item" role="button" tabindex="0">
+                <img src="https://img.icons8.com/fluency/96/visual-studio-code-2019.png" alt="Visual Studio Code icon">
+                <span>Visual Studio Code</span>
             </div>
         </div>
 
@@ -848,7 +868,7 @@
                 <input type="text" id="taskbar-search-input" placeholder="Type here to search...">
             </div>
             <div class="taskbar-icons" role="toolbar" aria-label="Running applications">
-            </div>
+                </div>
             <div class="taskbar-right">
                 <div class="taskbar-notification" role="button" aria-label="Notifications" tabindex="0">
                     <i class="fa-regular fa-bell"></i>
@@ -867,7 +887,7 @@
                 <div class="start-menu-header">All Apps</div>
                 <div class="start-menu-apps">
                     <div class="start-menu-app" data-window-target="#file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" role="menuitem" tabindex="0">
-                        <img src="https://img.icons8.com/color/48/000000/file-explorer.png" alt="File Explorer app icon">
+                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" alt="File Explorer app icon">
                         <span>File Explorer</span>
                     </div>
                     <div class="start-menu-app" data-window-target="#settings-window" data-taskbar-id="settings-taskbar-item" role="menuitem" tabindex="0">
@@ -881,6 +901,22 @@
                     <div class="start-menu-app" data-window-target="#calculator-window" data-taskbar-id="calculator-taskbar-item" role="menuitem" tabindex="0">
                         <img src="https://img.icons8.com/fluency/48/calculator.png" alt="Calculator app icon">
                         <span>Calculator</span>
+                    </div>
+                    <div class="start-menu-app" data-window-target="#documents-window" data-taskbar-id="documents-taskbar-item" role="menuitem" tabindex="0">
+                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" alt="Documents app icon">
+                        <span>Documents</span>
+                    </div>
+                    <div class="start-menu-app" data-window-target="#edge-window" data-taskbar-id="edge-taskbar-item" role="menuitem" tabindex="0">
+                        <img src="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" alt="Microsoft Edge app icon">
+                        <span>Microsoft Edge</span>
+                    </div>
+                    <div class="start-menu-app" data-window-target="#spotify-window" data-taskbar-id="spotify-taskbar-item" role="menuitem" tabindex="0">
+                        <img src="https://img.icons8.com/fluency/48/spotify.png" alt="Spotify app icon">
+                        <span>Spotify</span>
+                    </div>
+                    <div class="start-menu-app" data-window-target="#vscode-window" data-taskbar-id="vscode-taskbar-item" role="menuitem" tabindex="0">
+                        <img src="https://img.icons8.com/fluency/48/visual-studio-code-2019.png" alt="Visual Studio Code app icon">
+                        <span>Visual Studio Code</span>
                     </div>
                 </div>
                 <div class="start-menu-tiles">
@@ -904,7 +940,7 @@
         </div>
     </div>
 
-    <div class="window" id="file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" data-app-icon="https://img.icons8.com/color/48/000000/file-explorer.png" data-desktop="desktop-1" role="dialog" aria-labelledby="file-explorer-title">
+    <div class="window" id="file-explorer-window" data-taskbar-id="file-explorer-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true" data-desktop="desktop-1" role="dialog" aria-labelledby="file-explorer-title">
         <div class="window-title-bar">
             <span id="file-explorer-title">File Explorer</span>
             <div class="window-title-buttons">
@@ -918,7 +954,7 @@
         </div>
     </div>
 
-    <div class="window" id="documents-window" data-taskbar-id="documents-taskbar-item" data-app-icon="https://img.icons8.com/windows/96/000000/folder-invoices.png" data-desktop="desktop-1" role="dialog" aria-labelledby="documents-title">
+    <div class="window" id="documents-window" data-taskbar-id="documents-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true" data-desktop="desktop-1" role="dialog" aria-labelledby="documents-title">
         <div class="window-title-bar">
             <span id="documents-title">Documents</span>
             <div class="window-title-buttons">
@@ -961,23 +997,7 @@
                 <div class="task-manager-nav-item" role="tab" aria-controls="performance-tab" tabindex="-1">Performance</div>
             </div>
             <div class="task-manager-process-list" id="processes-tab" role="tabpanel">
-                <div class="task-manager-process">
-                    <span class="task-manager-process-name">File Explorer</span>
-                    <span class="task-manager-process-status">Running</span>
                 </div>
-                <div class="task-manager-process">
-                    <span class="task-manager-process-name">Settings</span>
-                    <span class="task-manager-process-status">Running</span>
-                </div>
-                <div class="task-manager-process">
-                    <span class="task-manager-process-name">Browser Mockup</span>
-                    <span class="task-manager-process-status">Running</span>
-                </div>
-                <div class="task-manager-process">
-                    <span class="task-manager-process-name">Host Process</span>
-                    <span class="task-manager-process-status">Running</span>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1011,6 +1031,48 @@
                 <button class="calculator-button number" style="grid-column: span 2;">0</button>
                 <button class="calculator-button number">.</button>
             </div>
+        </div>
+    </div>
+
+    <div class="window" id="edge-window" data-taskbar-id="edge-taskbar-item" data-app-icon="https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true" data-desktop="desktop-1" role="dialog" aria-labelledby="edge-title">
+        <div class="window-title-bar">
+            <span id="edge-title">Microsoft Edge</span>
+            <div class="window-title-buttons">
+                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <p>Welcome to Microsoft Edge! This is a simple browser mockup.</p>
+        </div>
+    </div>
+
+    <div class="window" id="spotify-window" data-taskbar-id="spotify-taskbar-item" data-app-icon="https://img.icons8.com/fluency/96/spotify.png" data-desktop="desktop-1" role="dialog" aria-labelledby="spotify-title">
+        <div class="window-title-bar">
+            <span id="spotify-title">Spotify</span>
+            <div class="window-title-buttons">
+                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <p>Welcome to Spotify! Start listening to your favorite music.</p>
+        </div>
+    </div>
+
+    <div class="window" id="vscode-window" data-taskbar-id="vscode-taskbar-item" data-app-icon="https://img.icons8.com/fluency/96/visual-studio-code-2019.png" data-desktop="desktop-1" role="dialog" aria-labelledby="vscode-title">
+        <div class="window-title-bar">
+            <span id="vscode-title">Visual Studio Code</span>
+            <div class="window-title-buttons">
+                <button class="minimize-btn" aria-label="Minimize"><i class="fas fa-window-minimize"></i></button>
+                <button class="maximize-btn" aria-label="Maximize"><i class="fas fa-window-maximize"></i></button>
+                <button class="close-btn" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <p>Welcome to Visual Studio Code! Start writing code.</p>
         </div>
     </div>
 
@@ -1080,6 +1142,7 @@
             const cortanaFlyout = document.getElementById('cortana-flyout');
             const cortanaInput = document.getElementById('cortana-input');
             const addDesktopBtn = document.getElementById('add-desktop-btn');
+            const taskManagerProcessesList = document.getElementById('processes-tab');
 
             let zIndexCounter = 2000;
             const desktops = {};
@@ -1088,7 +1151,72 @@
             });
             let currentDesktopId = 'desktop-1';
             let maximizedWindows = new Map();
-
+            const currentProcesses = {};
+            const pinnedApps = [
+                {
+                    id: 'documents-taskbar-item',
+                    windowTarget: '#documents-window',
+                    icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true',
+                    alt: 'Documents',
+                    name: 'Documents'
+                },
+                {
+                    id: 'file-explorer-taskbar-item',
+                    windowTarget: '#file-explorer-window',
+                    icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true',
+                    alt: 'File Explorer',
+                    name: 'File Explorer'
+                },
+                {
+                    id: 'edge-taskbar-item',
+                    windowTarget: '#edge-window',
+                    icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true',
+                    alt: 'Microsoft Edge',
+                    name: 'Microsoft Edge'
+                },
+                {
+                    id: 'spotify-taskbar-item',
+                    windowTarget: '#spotify-window',
+                    icon: 'https://img.icons8.com/fluency/96/spotify.png',
+                    alt: 'Spotify',
+                    name: 'Spotify'
+                },
+                {
+                    id: 'vscode-taskbar-item',
+                    windowTarget: '#vscode-window',
+                    icon: 'https://img.icons8.com/fluency/96/visual-studio-code-2019.png',
+                    alt: 'Visual Studio Code',
+                    name: 'Visual Studio Code'
+                }
+            ];
+            
+            // Function to render pinned apps on the taskbar
+            function renderPinnedApps() {
+                const pinnedContainer = document.createElement('div');
+                pinnedContainer.className = 'taskbar-pinned';
+                
+                pinnedApps.forEach(app => {
+                    const item = document.createElement('div');
+                    item.className = 'taskbar-item';
+                    item.id = app.id;
+                    item.dataset.windowTarget = app.windowTarget;
+                    item.innerHTML = `<img src="${app.icon}" alt="${app.alt}">`;
+                    
+                    item.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const windowEl = document.querySelector(item.dataset.windowTarget);
+                        if (windowEl) {
+                            openWindow(windowEl);
+                        }
+                    });
+                    
+                    pinnedContainer.appendChild(item);
+                });
+                
+                taskbarIconsContainer.insertAdjacentElement('beforebegin', pinnedContainer);
+            }
+            renderPinnedApps();
+            
             // --- Login Functionality ---
             const handleLogin = (e) => {
                 if (e) e.preventDefault();
@@ -1310,9 +1438,9 @@
             function openWindow(windowEl) {
                 const taskbarId = windowEl.dataset.taskbarId;
                 let taskbarItem = document.getElementById(taskbarId);
-
+                
                 if (!taskbarItem) {
-                    const iconUrl = windowEl.dataset.appIcon;
+                    const iconUrl = windowEl.dataset.app-icon;
                     taskbarItem = document.createElement('div');
                     taskbarItem.className = 'taskbar-item';
                     taskbarItem.id = taskbarId;
@@ -1336,12 +1464,12 @@
                     taskbarIconsContainer.appendChild(taskbarItem);
                 }
 
+                // Update z-index for all windows
                 windows.forEach(win => {
                     win.classList.remove('active');
-                    const item = document.getElementById(win.dataset.taskbarId);
-                    if (item) item.classList.remove('active');
                 });
-
+                document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
+                
                 windowEl.style.display = 'flex';
                 windowEl.classList.add('active');
                 taskbarItem.classList.add('active');
@@ -1358,12 +1486,34 @@
                     windowEl.style.top = `${posY}px`;
                     windowEl.dataset.hasOpened = true;
                 }
+                
+                // Add the new process
+                if (!currentProcesses[windowEl.id]) {
+                    const processName = windowEl.querySelector('.window-title-bar span').textContent;
+                    currentProcesses[windowEl.id] = { name: processName, status: 'Running' };
+                }
+                renderProcesses();
+            }
+
+            // New function to render the Task Manager process list
+            function renderProcesses() {
+                taskManagerProcessesList.innerHTML = '';
+                for (const id in currentProcesses) {
+                    const process = currentProcesses[id];
+                    const processEl = document.createElement('div');
+                    processEl.className = 'task-manager-process';
+                    processEl.innerHTML = `
+                        <span class="task-manager-process-name">${process.name}</span>
+                        <span class="task-manager-process-status">${process.status}</span>
+                    `;
+                    taskManagerProcessesList.appendChild(processEl);
+                }
             }
 
             document.addEventListener('click', (e) => {
                 const windowTarget = e.target.closest('[data-window-target]');
                 if (windowTarget) {
-                    const windowId = windowTarget.dataset.windowTarget;
+                    const windowId = windowTarget.dataset.window-target;
                     const windowEl = document.querySelector(windowId);
                     if (windowEl) {
                         openWindow(windowEl);
@@ -1377,19 +1527,23 @@
                 const windowEl = e.target.closest('.window');
 
                 if (closeBtn && windowEl) {
-                    const taskbarId = windowEl.dataset.taskbarId;
+                    const taskbarId = windowEl.dataset.taskbar-id;
                     const taskbarItem = document.getElementById(taskbarId);
                     windowEl.style.display = 'none';
                     if (taskbarItem) {
+                        const isPinned = pinnedApps.some(app => app.id === taskbarId);
                         const openWindows = document.querySelectorAll(`.window[data-taskbar-id="${taskbarId}"][style*="display: flex"]`);
-                        if (openWindows.length === 0) {
+                        
+                        if (!isPinned && openWindows.length === 0) {
                             taskbarItem.remove();
                         }
                     }
+                    delete currentProcesses[windowEl.id];
+                    renderProcesses();
                 } else if (minimizeBtn && windowEl) {
                     windowEl.style.display = 'none';
                     windowEl.classList.remove('active');
-                    const taskbarId = windowEl.dataset.taskbarId;
+                    const taskbarId = windowEl.dataset.taskbar-id;
                     const taskbarItem = document.getElementById(taskbarId);
                     if (taskbarItem) taskbarItem.classList.remove('active');
                 } else if (maximizeBtn && windowEl) {
