@@ -1,2 +1,1 @@
-# Windows-10-Windows-XP-etc-Website-VM
-This is a VM for windows
+So this isn't a VM at all its supposed to be a mockup/replica that functions like a windows 10 pc and somethings may be a lil broken but ill fix those later when i can so enjoy these mockups/replicas!
