@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 10</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --taskbar-height: 56px;
+            --taskbar-bg: rgba(20, 20, 20, 0.95);
+            --start-menu-bg: rgba(30, 30, 30, 0.98);
+            --window-bg: #2c2c2c;
+            --window-border: #444;
+            --window-title-bar-bg: #1c1c1c;
+            --text-color-light: #f1f1f1;
+            --text-color-dark: #f1f1f1;
+            --hover-bg: rgba(255, 255, 255, 0.1);
+            --font-family: 'Segoe UI', Arial, sans-serif;
+            --icon-size: 64px;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-family);
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            cursor: default;
+            background: #000;
+        }
+
+        /* Login Screen Styles */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows%2010.png?raw=true') no-repeat center center fixed;
+            background-size: cover;
+            flex-direction: column;
+            color: var(--text-color-light);
+            z-index: 2000;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #login-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .login-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-box h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .login-box .user-icon {
+            font-size: 80px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            padding: 10px;
+        }
+
+        .login-box .input-group {
+            display: flex;
+            align-items: center;
+            background: var(--text-color-dark);
+            padding: 5px 15px;
+        }
+
+        .login-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #000;
+            font-size: 1em;
+            padding: 8px;
+            width: 200px;
+        }
+
+        .login-box input::placeholder {
+            color: #777;
+        }
+
+        .login-box button {
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-box button:hover {
+            background: #005a9e;
+        }
+
+        /* Desktop Styles */
+        .desktop-container {
+            height: 100vh;
+            background: #000;
+            position: relative;
+            z-index: 1;
+        }
+
+        .desktop {
+            height: calc(100vh - var(--taskbar-height));
+            padding: 30px 20px;
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(auto-fill, 100px);
+            align-content: flex-start;
+            gap: 20px;
+            position: relative;
+        }
+
+        .virtual-desktop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .virtual-desktop.active {
+            display: grid;
+        }
+
+        .icon {
+            width: 80px;
+            height: 90px;
+            text-align: center;
+            color: var(--text-color-light);
+            cursor: pointer;
+            text-shadow: 1px 1px 2px #000;
+            transition: background 0.2s;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .icon img {
+            width: var(--icon-size);
+            margin-bottom: 5px;
+            filter: drop-shadow(1px 1px 2px #000);
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--taskbar-height);
+            background: var(--taskbar-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        .taskbar-start {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0 10px;
+            transition: background 0.2s;
+        }
+
+        .taskbar-start img {
+            width: 40px;
+            transition: transform 0.2s;
+        }
+
+        .taskbar-start:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+         
+        /* Updated Search Box Styles */
+        .taskbar-search {
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            background: white; 
+            border: 1px solid #ccc; 
+            padding: 8px 16px;
+            min-width: 250px;
+            height: 38px;
+        }
+
+        .taskbar-search i {
+            color: #555; 
+            margin-right: 10px;
+        }
+
+        .taskbar-search input {
+            background: transparent;
+            color: #000;
+            border: none;
+            width: 100%;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .taskbar-search input::placeholder {
+            color: #555; 
+        }
+        /* End of Updated Search Box Styles */
+
+        .taskbar-icons {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+         
+        .taskbar-pinned {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .taskbar-item {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .taskbar-item:hover {
+            background: var(--hover-bg);
+        }
+
+        .taskbar-item.active {
+            border-color: #00a0e2;
+        }
+
+        .taskbar-item img {
+            width: 32px;
+        }
+
+        .taskbar-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            gap: 12px;
+            font-size: 15px;
+            color: var(--text-color-light);
+            padding-right: 12px;
+        }
+
+        .taskbar-notification {
+            height: 100%;
+            padding: 0 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .taskbar-notification:hover {
+            background: var(--hover-bg);
+        }
+
+        .taskbar-notification i {
+            font-size: 20px;
+        }
+
+        .taskbar-time {
+            padding: 0 10px;
+            line-height: 1.2;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .taskbar-time:hover {
+            background: var(--hover-bg);
+        }
+
+        /* Start Menu */
+        .start-menu {
+            position: fixed;
+            bottom: calc(var(--taskbar-height) + 8px);
+            left: 12px;
+            width: 600px;
+            height: 560px;
+            background: var(--start-menu-bg);
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.7);
+            color: var(--text-color-light);
+            display: none;
+            flex-direction: row;
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .start-menu-left {
+            width: 60px;
+            display: flex;
+            flex-direction: column;
+            background: #2a2a2a;
+        }
+
+        .start-menu-left .power-icon {
+            margin-top: auto;
+            padding: 15px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .start-menu-left .power-icon:hover {
+            background: var(--hover-bg);
+        }
+
+        .start-menu-left .power-icon i {
+            font-size: 22px;
+        }
+
+        .start-menu-right {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .start-menu-header {
+            padding: 16px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-bottom: 1px solid #444;
+        }
+
+        .start-menu-apps {
+            width: 280px;
+            padding: 12px 0;
+            overflow-y: auto;
+        }
+
+        .start-menu-app {
+            display: flex;
+            align-items: center;
+            padding: 8px 18px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .start-menu-app:hover {
+            background: var(--hover-bg);
+        }
+
+        .start-menu-app img {
+            width: 28px;
+            margin-right: 10px;
+        }
+
+        .start-menu-tiles {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 8px;
+            padding: 12px;
+            overflow-y: auto;
+            background: #202020;
+            border-left: 1px solid #444;
+        }
+
+        .tile {
+            width: 140px;
+            height: 140px;
+            background: #0078d7;
+            color: #fff;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .tile:hover {
+            transform: scale(1.05);
+        }
+
+        .tile-content {
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .tile-small {
+            width: 66px;
+            height: 66px;
+        }
+
+        .tile-medium {
+            width: 140px;
+            height: 140px;
+        }
+
+        .tile-large {
+            width: 290px;
+            height: 140px;
+        }
+
+        .tile-wide {
+            width: 290px;
+            height: 140px;
+        }
+
+        /* Search/Cortana Flyout */
+        #cortana-flyout {
+            position: fixed;
+            bottom: var(--taskbar-height);
+            left: 8px;
+            width: 480px;
+            height: calc(100vh - var(--taskbar-height) - 16px);
+            background: #202020;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            animation: slideUp 0.2s;
+            color: var(--text-color-light);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .cortana-search-box {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            align-items: center;
+        }
+
+        .cortana-search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            flex-grow: 1;
+            font-size: 1.2em;
+            padding: 8px;
+            outline: none;
+        }
+
+        .cortana-search-box i {
+            color: #ccc;
+            margin-right: 10px;
+        }
+
+        /* Window */
+        .window {
+            position: absolute;
+            top: 10%;
+            left: 20%;
+            width: 500px;
+            height: 400px;
+            background: var(--window-bg);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--window-border);
+            border-radius: 8px; /* Fix #4: Added default border-radius */
+            font-family: var(--font-family);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            resize: both;
+            min-width: 200px;
+            min-height: 150px;
+        }
+
+        .window.active {
+            z-index: 2000;
+        }
+
+        .window-title-bar {
+            background: var(--window-title-bar-bg);
+            color: var(--text-color-light);
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            flex-shrink: 0;
+        }
+
+        .window-title-buttons {
+            display: flex;
+            gap: 2px;
+        }
+
+        .window-title-buttons button {
+            background: transparent;
+            border: none;
+            color: var(--text-color-light);
+            font-size: 16px;
+            cursor: pointer;
+            width: 32px;
+            height: 24px;
+            transition: background 0.2s;
+        }
+
+        .window-title-buttons button:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .window-title-buttons .close-btn:hover {
+            background-color: #e81123;
+        }
+
+        .window-content {
+            padding: 16px;
+            color: var(--text-color-dark);
+            flex-grow: 1;
+            overflow: auto;
+        }
+
+        /* Calculator Specific Styles */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+            padding: 10px;
+            background-color: #202020;
+        }
+
+        .calculator-display {
+            grid-column: 1 / -1;
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            text-align: right;
+            font-size: 2em;
+            word-wrap: break-word;
+            word-break: break-all;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .calculator-button {
+            padding: 20px;
+            font-size: 1.5em;
+            background-color: #333;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .calculator-button.operator {
+            background-color: #4CAF50;
+        }
+        .calculator-button.equals {
+            background-color: #0078d7;
+        }
+
+        .calculator-button:hover {
+            background-color: #555;
+        }
+        .calculator-button.operator:hover {
+            background-color: #66bb6a;
+        }
+        .calculator-button.equals:hover {
+            background-color: #005a9e;
+        }
+
+        /* Task Manager */
+        .task-manager-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .task-manager-nav {
+            display: flex;
+            background: #3a3a3a;
+            border-bottom: 1px solid #555;
+        }
+
+        .task-manager-nav-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #ccc;
+            border-right: 1px solid #555;
+            transition: background 0.2s;
+        }
+
+        .task-manager-nav-item.active {
+            background: var(--window-bg);
+            color: var(--text-color-dark);
+            border-bottom: none;
+        }
+
+        .task-manager-nav-item:hover {
+            background: #444;
+        }
+
+        .task-manager-process-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            background: #2c2c2c;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-manager-process {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            border-bottom: 1px solid #3d3d3d;
+        }
+
+        .task-manager-process-name {
+            font-weight: bold;
+        }
+
+        .task-manager-process-status {
+            color: #aaa;
+        }
+
+        /* Shutdown Screen */
+        #shutdown-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #shutdown-screen.visible {
+            opacity: 1;
+            display: flex;
+        }
+
+        #shutdown-screen .logo img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        #shutdown-screen .loader {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+        }
+
+        #shutdown-screen .loading-dots span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            border-radius: 50%;
+            margin: 0 3px;
+            opacity: 0;
+            animation: fadeDot 1.5s infinite;
+        }
+
+        #shutdown-screen .loading-dots span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        #shutdown-screen .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        #shutdown-screen .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeDot {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Task View */
+        #task-view {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            z-index: 3000;
+        }
+
+        .task-view-top {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .task-view-top .close-btn {
+            background: transparent;
+            color: #fff;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            padding: 5px 15px;
+            transition: background 0.2s;
+        }
+
+        .task-view-top .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #task-view-windows {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+
+        .task-view-window-thumb {
+            width: 250px;
+            height: 180px;
+            background: var(--window-bg);
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .task-view-window-thumb:hover {
+            transform: scale(1.05);
+        }
+
+        .task-view-window-thumb .window-thumb-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .task-view-bottom {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            justify-content: center;
+        }
+
+        .task-view-bottom button {
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .task-view-bottom button:hover {
+            background: #005a9e;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-container">
+        <div id="login-screen">
+            <div class="login-box" role="dialog" aria-modal="true" aria-labelledby="login-heading">
+                <h1 id="login-heading">User</h1>
+                <i class="fas fa-user-circle user-icon"></i>
+                <div class="input-group">
+                    <input type="password" id="password-input" placeholder="Password" aria-label="Password">
+                    <button id="login-btn" aria-label="Log in"><i class="fas fa-arrow-right"></i></button>
+                </div>
+                <p id="login-message" role="alert" style="color: #e81123; display: none;">Incorrect password. Try "password".</p>
+            </div>
+        </div>
+
+        <div class="desktop-container" id="desktop-container" style="display: none;">
+            <div class="desktop active" id="desktop-1">
+                </div>
+
+            <div class="taskbar">
+                <div class="taskbar-start" id="start-button" role="button" aria-expanded="false" aria-controls="start-menu" tabindex="0">
+                    <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Start">
+                </div>
+                <div class="taskbar-item" id="task-view-button" role="button" aria-label="Task View" tabindex="0">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="taskbar-search" id="cortana-button" role="search" aria-label="Search" tabindex="0">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="taskbar-search-input" placeholder="Type here to search...">
+                </div>
+                <div class="taskbar-icons" role="toolbar" aria-label="Running applications">
+                    </div>
+                <div class="taskbar-right">
+                    <div class="taskbar-notification" role="button" aria-label="Notifications" tabindex="0">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <div class="taskbar-time" id="taskbarTime" role="timer" aria-live="polite"></div>
+                </div>
+            </div>
+
+            <div class="start-menu" id="start-menu" role="menu" aria-hidden="true" style="display: none;">
+                <div class="start-menu-left">
+                    <div class="start-menu-power power-icon" id="shutdown-button" role="menuitem" aria-label="Power" tabindex="0">
+                        <i class="fa-solid fa-power-off"></i>
+                    </div>
+                </div>
+                <div class="start-menu-right">
+                    <div class="start-menu-header">All Apps</div>
+                    <div class="start-menu-apps">
+                        </div>
+                    <div class="start-menu-tiles">
+                        </div>
+                </div>
+            </div>
+
+            <div id="cortana-flyout" role="search" aria-hidden="true" style="display: none;">
+                <div class="cortana-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search the web and Windows">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="shutdown-screen" style="display: none;" role="alert" aria-live="assertive">
+        <div class="logo">
+            <img src="https://img.icons8.com/color/96/000000/windows-10.png" alt="Windows Logo">
+        </div>
+        <div class="loader">
+            Shutting down
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="task-view" aria-hidden="true" style="display: none;">
+        <div class="task-view-top">
+            <button class="close-btn" aria-label="Close Task View">×</button>
+        </div>
+        <div id="task-view-windows">
+            </div>
+        <div class="task-view-bottom">
+            <button id="add-desktop-btn">Add new desktop</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginScreen = document.getElementById('login-screen');
+            const passwordInput = document.getElementById('password-input');
+            const loginBtn = document.getElementById('login-btn');
+            const loginMessage = document.getElementById('login-message');
+            const mainContainer = document.getElementById('main-container');
+            const desktopContainer = document.getElementById('desktop-container');
+            const startButton = document.getElementById('start-button');
+            const startMenu = document.getElementById('start-menu');
+            const shutdownButton = document.getElementById('shutdown-button');
+            const shutdownScreen = document.getElementById('shutdown-screen');
+            const cortanaButton = document.getElementById('cortana-button');
+            const cortanaFlyout = document.getElementById('cortana-flyout');
+            const taskbarTime = document.getElementById('taskbarTime');
+            const taskbarIconsContainer = document.querySelector('.taskbar-icons');
+            const taskViewButton = document.getElementById('task-view-button');
+            const taskView = document.getElementById('task-view');
+            const taskViewWindowsContainer = document.getElementById('task-view-windows');
+            const taskViewCloseBtn = document.querySelector('#task-view .close-btn');
+            const addDesktopBtn = document.getElementById('add-desktop-btn');
+            const desktopArea = document.querySelector('.desktop-container');
+            const startMenuAppsContainer = document.querySelector('.start-menu-apps');
+            const startMenuTilesContainer = document.querySelector('.start-menu-tiles');
+
+            const runningProcesses = {}; // Stores information about open windows
+            let zIndexCounter = 2000;
+            let currentDesktopId = 1;
+            let windowState = {}; // Stores window positions and sizes
+
+            // --- App Data ---
+            const mockApps = [
+                { id: 'file-explorer', name: 'File Explorer', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-file-explorer.png?raw=true', desktop: true, taskbarPinned: true, content: '<p>This is a mock File Explorer window.</p>' },
+                { id: 'documents', name: 'Documents', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/windows-10-documents-logo.png?raw=true', desktop: true, content: '<p>This is a mock Documents window. It contains important files.</p>' },
+                { id: 'edge', name: 'Microsoft Edge', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/microsoft-edge-logo-removebg-preview.png?raw=true', desktop: true, taskbarPinned: true, content: '<iframe src="https://www.bing.com" style="width:100%; height:100%; border:0;"></iframe>' },
+                { id: 'spotify', name: 'Spotify', icon: 'https://img.icons8.com/fluency/96/spotify.png', desktop: true, taskbarPinned: true, content: '<iframe src="https://open.spotify.com" style="width:100%; height:100%; border:0;"></iframe>' },
+                { id: 'vscode', name: 'Visual Studio Code', icon: 'https://img.icons8.com/fluency/96/visual-studio-code-2019.png', desktop: true, content: '<p>This is a mock Visual Studio Code window. You can\'t actually edit code here, but you get the idea.</p>' },
+                { id: 'settings', name: 'Settings', icon: 'https://img.icons8.com/color/48/000000/settings.png', desktop: false, taskbarPinned: true, content: '<h3>System Settings</h3><p>Display, sound, notifications, power</p><h3>Devices</h3><p>Bluetooth, printers, mouse</p>' },
+                { id: 'task-manager', name: 'Task Manager', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/task-manager.png?raw=true', desktop: false, content: '<div class="task-manager-nav"><div class="task-manager-nav-item active">Processes</div><div class="task-manager-nav-item">Performance</div><div class="task-manager-nav-item">App history</div></div><div class="task-manager-process-list"></div>' },
+                { id: 'calculator', name: 'Calculator', icon: 'https://img.icons8.com/fluency/48/calculator.png', desktop: false, taskbarPinned: true, content: '<div class="calculator-display">0</div><div class="calculator-grid"><button class="calculator-button operator">C</button><button class="calculator-button operator">+/-</button><button class="calculator-button operator">%</button><button class="calculator-button operator">/</button><button class="calculator-button number">7</button><button class="calculator-button number">8</button><button class="calculator-button number">9</button><button class="calculator-button operator">*</button><button class="calculator-button number">4</button><button class="calculator-button number">5</button><button class="calculator-button number">6</button><button class="calculator-button operator">-</button><button class="calculator-button number">1</button><button class="calculator-button number">2</button><button class="calculator-button number">3</button><button class="calculator-button operator">+</button><button class="calculator-button number" style="grid-column: span 2;">0</button><button class="calculator-button number">.</button><button class="calculator-button equals">=</button></div>' },
+                { id: 'minesweeper', name: 'Minesweeper', icon: 'https://img.icons8.com/color/96/minesweeper.png', desktop: true, taskbarPinned: true, content: `
+                    <div class="minesweeper">
+                        <div class="ms-header">
+                            <div class="ms-panel" id="ms-mines">010</div>
+                            <div class="ms-smiley" id="ms-smiley">🙂</div>
+                            <div class="ms-panel" id="ms-timer">000</div>
+                        </div>
+                        <div class="ms-board" id="ms-board"></div>
+                    </div>
+                `},
+                { id: 'minecraft', name: 'Minecraft', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/minecraft-logo.png?raw=true', desktop: true, taskbarPinned: true, content: '<p>This is a mock Minecraft window.</p>' },
+                { id: 'roblox', name: 'Roblox', icon: 'https://img.icons8.com/fluency/96/roblox.png', desktop: true, taskbarPinned: true, content: '<iframe src="https://roblox.com" style="width:100%; height:100%; border:0;"></iframe>' },
+                { id: 'doom', name: 'Doom', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/doom-logo.png?raw=true', desktop: true, taskbarPinned: true, content: '<p>Welcome to DOOM. You must find the demons.</p>' },
+                { id: 'baldis-basics', name: "Baldi's Basics", icon: 'https://raw.githubusercontent.com/ripjaw1219/baldis-basics-html5-edition/main/background.jpg', desktop: true, taskbarPinned: true, content: '<iframe src="https://github.com/ripjaw1219/baldis-basics-html5-edition/blob/main/background.jpg?raw=true" style="width:100%; height:100%; border:0;"></iframe>' },
+                { id: 'flappy-bird', name: 'Flappy Bird', icon: 'https://raw.githubusercontent.com/087n7/Windows-10-Windows-XP-etc-Website-VM/main/flappy-bird-icon.png', desktop: true, taskbarPinned: true, content: '<p>Tap to flap your way through the pipes!</p>' },
+            ];
+            
+            // --- Tile Data ---
+            const mockTiles = [
+                { name: 'Weather', size: 'tile-medium', color: '#008298', content: '<div class="tile-content">Weather</div>' },
+                { name: 'Photos', size: 'tile-small', color: '#e61d5f', content: '<div class="tile-content">Photos</div>' },
+                { name: 'News', size: 'tile-small', color: '#00b9f1', content: '<div class="tile-content">News</div>' },
+                { name: 'Store', size: 'tile-wide', color: '#7a1d7a', content: '<div class="tile-content">Store</div>' },
+                { name: 'Mail', size: 'tile-medium', color: '#202020', content: '<div class="tile-content">Mail</div>' },
+            ];
+
+            // --- Dynamic HTML Generation ---
+            function generateApps() {
+                const desktop = document.getElementById('desktop-1');
+                const windowsContainer = document.body;
+
+                mockApps.forEach(app => {
+                    // Create Window Element
+                    const windowElement = document.createElement('div');
+                    windowElement.classList.add('window');
+                    windowElement.id = `${app.id}-window`;
+                    windowElement.dataset.taskbarId = `${app.id}-taskbar-item`;
+                    windowElement.dataset.appIcon = app.icon;
+                    windowElement.dataset.appName = app.name;
+                    windowElement.innerHTML = `
+                        <div class="window-title-bar">
+                            <span>${app.name}</span>
+                            <div class="window-title-buttons">
+                                <button class="minimize-btn" aria-label="Minimize"><i class="fa-solid fa-window-minimize"></i></button>
+                                <button class="maximize-btn" aria-label="Maximize"><i class="fa-solid fa-window-maximize"></i></button>
+                                <button class="close-btn" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>
+                        <div class="window-content" id="${app.id}-content">
+                            ${app.content}
+                        </div>
+                    `;
+                    windowsContainer.appendChild(windowElement);
+
+                    // Create Desktop Icon if needed
+                    if (app.desktop) {
+                        const iconElement = document.createElement('div');
+                        iconElement.classList.add('icon');
+                        iconElement.dataset.windowTarget = `#${app.id}-window`;
+                        iconElement.dataset.taskbarId = `${app.id}-taskbar-item`;
+                        iconElement.setAttribute('role', 'button');
+                        iconElement.setAttribute('tabindex', '0');
+                        iconElement.innerHTML = `
+                            <img src="${app.icon}" alt="${app.name} icon">
+                            <span>${app.name}</span>
+                        `;
+                        desktop.appendChild(iconElement);
+                    }
+                    
+                    // Create Start Menu App Item
+                    const startAppItem = document.createElement('div');
+                    startAppItem.classList.add('start-menu-app');
+                    startAppItem.dataset.windowTarget = `#${app.id}-window`;
+                    startAppItem.dataset.taskbarId = `${app.id}-taskbar-item`;
+                    startAppItem.setAttribute('role', 'menuitem');
+                    startAppItem.setAttribute('tabindex', '0');
+                    startAppItem.innerHTML = `<img src="${app.icon}" alt="${app.name} app icon"><span>${app.name}</span>`;
+                    startMenuAppsContainer.appendChild(startAppItem);
+                });
+
+                // Generate Tiles
+                mockTiles.forEach(tile => {
+                    const tileElement = document.createElement('div');
+                    tileElement.classList.add('tile', tile.size);
+                    tileElement.style.background = tile.color;
+                    if (tile.name === 'Weather') {
+                        tileElement.dataset.windowTarget = `#weather-window`;
+                        tileElement.dataset.taskbarId = `weather-taskbar-item`;
+                    }
+                    tileElement.setAttribute('role', 'button');
+                    tileElement.setAttribute('tabindex', '0');
+                    tileElement.innerHTML = tile.content;
+                    startMenuTilesContainer.appendChild(tileElement);
+                });
+            }
+
+            generateApps();
+
+            // --- Login Logic ---
+            const correctPassword = 'password';
+
+            loginBtn.addEventListener('click', () => {
+                if (passwordInput.value === correctPassword) {
+                    loginScreen.classList.add('fade-out');
+                    loginMessage.style.display = 'none'; // Fix: Hide on successful login
+                    setTimeout(() => {
+                        loginScreen.style.display = 'none';
+                        desktopContainer.style.display = 'block';
+                    }, 500);
+                } else {
+                    loginMessage.style.display = 'block';
+                }
+            });
+
+            // --- Clock and Date ---
+            function updateTime() {
+                const now = new Date();
+                const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const date = now.toLocaleDateString();
+                taskbarTime.innerHTML = `<span>${time}</span><span>${date}</span>`;
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // --- Start Menu and Cortana Toggle ---
+            function toggleStartMenu() {
+                const isHidden = startMenu.style.display === 'none';
+                startMenu.style.display = isHidden ? 'flex' : 'none';
+                startButton.setAttribute('aria-expanded', !isHidden);
+                startMenu.setAttribute('aria-hidden', !isHidden);
+                if (!isHidden) {
+                    hideCortanaFlyout();
+                }
+            }
+
+            function hideStartMenu() {
+                startMenu.style.display = 'none';
+                startButton.setAttribute('aria-expanded', 'false');
+                startMenu.setAttribute('aria-hidden', 'true');
+            }
+
+            function toggleCortanaFlyout() {
+                const isHidden = cortanaFlyout.style.display === 'none';
+                cortanaFlyout.style.display = isHidden ? 'flex' : 'none';
+                cortanaFlyout.setAttribute('aria-hidden', !isHidden);
+                if (!isHidden) {
+                    hideStartMenu();
+                }
+            }
+            function hideCortanaFlyout() {
+                cortanaFlyout.style.display = 'none';
+                cortanaFlyout.setAttribute('aria-hidden', 'true');
+            }
+
+            startButton.addEventListener('click', toggleStartMenu);
+            cortanaButton.addEventListener('click', toggleCortanaFlyout);
+
+            document.addEventListener('click', (e) => {
+                if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+                    hideStartMenu();
+                }
+                if (!cortanaFlyout.contains(e.target) && !cortanaButton.contains(e.target)) {
+                    hideCortanaFlyout();
+                }
+            });
+
+            // --- Shutdown Logic ---
+            shutdownButton.addEventListener('click', () => {
+                mainContainer.style.display = 'none';
+                shutdownScreen.style.display = 'flex';
+                setTimeout(() => {
+                    shutdownScreen.classList.add('visible');
+                }, 10);
+                setTimeout(() => {
+                    location.reload(); 
+                }, 3000);
+            });
+
+            // --- Taskbar Pinned Apps Rendering ---
+            const taskbarPinnedContainer = document.createElement('div');
+            taskbarPinnedContainer.classList.add('taskbar-pinned');
+            taskbarIconsContainer.parentNode.insertBefore(taskbarPinnedContainer, taskbarIconsContainer);
+
+            function renderPinnedApps() {
+                taskbarPinnedContainer.innerHTML = '';
+                const pinnedApps = mockApps.filter(app => app.taskbarPinned);
+                pinnedApps.forEach(app => {
+                    const pinnedIcon = document.createElement('div');
+                    pinnedIcon.classList.add('taskbar-item');
+                    pinnedIcon.dataset.windowTarget = `#${app.id}-window`;
+                    pinnedIcon.dataset.taskbarId = `${app.id}-taskbar-item`;
+                    pinnedIcon.innerHTML = `<img src="${app.icon}" alt="${app.name} icon">`;
+                    pinnedIcon.setAttribute('role', 'button');
+                    pinnedIcon.setAttribute('aria-label', `${app.name}`);
+                    taskbarPinnedContainer.appendChild(pinnedIcon);
+                    
+                    pinnedIcon.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const targetWindow = document.querySelector(pinnedIcon.dataset.windowTarget);
+                        if (targetWindow.style.display === 'flex') {
+                            if (targetWindow.classList.contains('active')) {
+                                minimizeWindow(targetWindow);
+                            } else {
+                                restoreWindow(targetWindow);
+                                focusWindow(targetWindow);
+                            }
+                        } else {
+                            openWindow(targetWindow);
+                        }
+                    });
+                });
+            }
+            renderPinnedApps();
+
+
+            // --- Task Manager Processes Update ---
+            function updateTaskManagerProcesses() {
+                const currentTaskManager = document.querySelector('.task-manager-process-list'); // Fix: Use class selector
+                if (currentTaskManager) {
+                    currentTaskManager.innerHTML = '';
+                    Object.values(runningProcesses).forEach(proc => {
+                        const processDiv = document.createElement('div');
+                        processDiv.classList.add('task-manager-process');
+                        processDiv.innerHTML = `
+                            <span class="task-manager-process-name">${proc.appName}</span>
+                            <span class="task-manager-process-status">${proc.state}</span>
+                        `;
+                        currentTaskManager.appendChild(processDiv);
+                    });
+                }
+            }
+
+            // --- Window Management ---
+            document.addEventListener('click', (e) => {
+                const windowTarget = e.target.closest('[data-window-target]');
+                if (windowTarget) {
+                    hideStartMenu();
+                    hideCortanaFlyout();
+                    
+                    const windowElement = document.querySelector(windowTarget.dataset.windowTarget);
+                    
+                    if (windowElement) {
+                        if (windowElement.style.display === 'flex' && !windowTarget.classList.contains('taskbar-item')) {
+                            focusWindow(windowElement);
+                        } else {
+                            openWindow(windowElement);
+                        }
+                    }
+                }
+            });
+            
+            function openWindow(windowElement) {
+                const windowId = windowElement.id;
+                const taskbarId = windowElement.dataset.taskbarId;
+                const appIcon = windowElement.dataset.appIcon;
+                const appName = windowElement.dataset.appName;
+                
+                windowElement.style.display = 'flex';
+                focusWindow(windowElement);
+
+                if (!runningProcesses[windowId]) {
+                    runningProcesses[windowId] = { appName: appName, id: windowId, state: 'Running' };
+                    createTaskbarItem(windowId, taskbarId, appIcon, appName);
+                } else {
+                     runningProcesses[windowId].state = 'Running';
+                }
+                
+                updateTaskManagerProcesses();
+            }
+
+            function focusWindow(windowElement) {
+                document.querySelectorAll('.window').forEach(win => {
+                    win.classList.remove('active');
+                    win.style.zIndex = '999';
+                });
+                document.querySelectorAll('.taskbar-item').forEach(item => item.classList.remove('active'));
+
+                windowElement.classList.add('active');
+                windowElement.style.zIndex = ++zIndexCounter;
+                
+                const taskbarItem = document.querySelector(`.taskbar-item[data-taskbar-id="${windowElement.dataset.taskbarId}"]`);
+                if (taskbarItem) {
+                    taskbarItem.classList.add('active');
+                }
+                
+                windowElement.setAttribute('aria-hidden', 'false');
+            }
+
+            function createTaskbarItem(windowId, taskbarId, iconSrc, appName) {
+                const taskbarItem = document.createElement('div');
+                taskbarItem.classList.add('taskbar-item');
+                taskbarItem.dataset.windowTarget = `#${windowId}`;
+                taskbarItem.dataset.taskbarId = taskbarId;
+                taskbarItem.setAttribute('role', 'button');
+                taskbarItem.setAttribute('aria-label', appName);
+                taskbarItem.innerHTML = `<img src="${iconSrc}" alt="${appName} icon">`;
+                taskbarIconsContainer.appendChild(taskbarItem);
+                
+                taskbarItem.addEventListener('click', () => {
+                    const windowElement = document.getElementById(windowId);
+                    if (windowElement.style.display === 'flex' && windowElement.classList.contains('active')) {
+                        minimizeWindow(windowElement);
+                    } else {
+                        restoreWindow(windowElement);
+                        focusWindow(windowElement);
+                    }
+                });
+            }
+
+            function minimizeWindow(windowElement) {
+                windowElement.style.display = 'none';
+                const taskbarItem = document.querySelector(`.taskbar-item[data-taskbar-id="${windowElement.dataset.taskbarId}"]`);
+                if (taskbarItem) {
+                    taskbarItem.classList.remove('active');
+                }
+                
+                if (runningProcesses[windowElement.id]) {
+                    runningProcesses[windowElement.id].state = 'Minimized';
+                }
+                updateTaskManagerProcesses();
+            }
+
+            function restoreWindow(windowElement) {
+                windowElement.style.display = 'flex';
+                
+                if (runningProcesses[windowElement.id]) {
+                    runningProcesses[windowElement.id].state = 'Running';
+                }
+                updateTaskManagerProcesses();
+            }
+            
+            // --- Window drag and resize ---
+            const windows = document.querySelectorAll('.window');
+            windows.forEach(windowElement => {
+                initializeWindow(windowElement);
+            });
+
+            function initializeWindow(windowElement) {
+                const titleBar = windowElement.querySelector('.window-title-bar');
+                const closeBtn = windowElement.querySelector('.close-btn');
+                const minimizeBtn = windowElement.querySelector('.minimize-btn');
+                const maximizeBtn = windowElement.querySelector('.maximize-btn');
+
+                if (!windowState[windowElement.id]) {
+                    windowState[windowElement.id] = {
+                        x: windowElement.offsetLeft,
+                        y: windowElement.offsetTop,
+                        w: windowElement.offsetWidth,
+                        h: windowElement.offsetHeight,
+                        maximized: false
+                    };
+                }
+
+                let isDragging = false;
+                let offsetX, offsetY;
+
+                function handleMouseMove(e) {
+                    if (!isDragging) return;
+                    
+                    const newX = e.clientX - offsetX;
+                    const newY = e.clientY - offsetY;
+                    
+                    windowElement.style.left = `${newX}px`;
+                    windowElement.style.top = `${newY}px`;
+                }
+
+                function handleMouseUp() {
+                    if (isDragging) {
+                        isDragging = false;
+                        windowElement.style.cursor = 'default';
+                        windowState[windowElement.id].x = windowElement.offsetLeft;
+                        windowState[windowElement.id].y = windowElement.offsetTop;
+                        
+                        document.removeEventListener('mousemove', handleMouseMove);
+                        document.removeEventListener('mouseup', handleMouseUp);
+                    }
+                }
+                
+                titleBar.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('button')) return;
+                    if (windowState[windowElement.id].maximized) return; // Fix: Prevent dragging if maximized
+                    
+                    isDragging = true;
+                    offsetX = e.clientX - windowElement.getBoundingClientRect().left;
+                    offsetY = e.clientY - windowElement.getBoundingClientRect().top;
+                    
+                    focusWindow(windowElement);
+                    windowElement.style.cursor = 'grabbing';
+                    
+                    document.addEventListener('mousemove', handleMouseMove);
+                    document.addEventListener('mouseup', handleMouseUp);
+                });
+
+                closeBtn.addEventListener('click', () => {
+                    windowElement.style.display = 'none';
+                    windowElement.setAttribute('aria-hidden', 'true'); // Fix: Update ARIA
+                    const taskbarItem = document.querySelector(`.taskbar-item[data-taskbar-id="${windowElement.dataset.taskbarId}"]`);
+                    if (taskbarItem) {
+                        taskbarItem.remove();
+                    }
+                    if (runningProcesses[windowElement.id]) {
+                        delete runningProcesses[windowElement.id];
+                    }
+                    updateTaskManagerProcesses();
+                });
+                
+                minimizeBtn.addEventListener('click', () => {
+                    minimizeWindow(windowElement);
+                    windowElement.setAttribute('aria-hidden', 'true'); // Fix: Update ARIA
+                });
+                
+                maximizeBtn.addEventListener('click', () => {
+                    if (!windowState[windowElement.id].maximized) {
+                        windowState[windowElement.id].x = windowElement.offsetLeft;
+                        windowState[windowElement.id].y = windowElement.offsetTop;
+                        windowState[windowElement.id].w = windowElement.offsetWidth;
+                        windowState[windowElement.id].h = windowElement.offsetHeight;
+
+                        windowElement.style.top = '0';
+                        windowElement.style.left = '0';
+                        windowElement.style.width = '100vw';
+                        windowElement.style.height = `calc(100vh - var(--taskbar-height))`;
+                        windowElement.style.borderRadius = '0';
+                        windowElement.style.resize = 'none';
+                        windowState[windowElement.id].maximized = true;
+                    } else {
+                        windowElement.style.top = `${windowState[windowElement.id].y}px`;
+                        windowElement.style.left = `${windowState[windowElement.id].x}px`;
+                        windowElement.style.width = `${windowState[windowElement.id].w}px`;
+                        windowElement.style.height = `${windowState[windowElement.id].h}px`;
+                        windowElement.style.borderRadius = '8px';
+                        windowElement.style.resize = 'both';
+                        windowState[windowElement.id].maximized = false;
+                    }
+                });
+            }
+
+
+            // --- Calculator Logic ---
+            const calculatorDisplay = document.querySelector('#calculator-window .calculator-display');
+            const calculatorButtons = document.querySelectorAll('#calculator-window .calculator-button');
+            
+            let currentInput = '0';
+            let firstOperand = null;
+            let operator = null;
+            let waitForSecondOperand = false;
+            
+            function resetCalculatorState() {
+                currentInput = '0';
+                firstOperand = null;
+                operator = null;
+                waitForSecondOperand = false;
+            }
+
+            calculatorButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const buttonText = button.textContent;
+                    
+                    if (buttonText === 'C') {
+                        resetCalculatorState();
+                        calculatorDisplay.textContent = '0';
+                        return;
+                    }
+                    
+                    if (buttonText === '=') {
+                        if (operator && firstOperand !== null) {
+                            let result = 0;
+                            const secondOperand = parseFloat(currentInput);
+                            switch(operator) {
+                                case '+': result = firstOperand + secondOperand; break;
+                                case '-': result = firstOperand - secondOperand; break;
+                                case '*': result = firstOperand * secondOperand; break;
+                                case '/':
+                                    if (secondOperand === 0) {
+                                        calculatorDisplay.textContent = "Error";
+                                        resetCalculatorState();
+                                        return;
+                                    }
+                                    result = firstOperand / secondOperand;
+                                    break;
+                            }
+                            calculatorDisplay.textContent = result;
+                            currentInput = result.toString();
+                            firstOperand = null;
+                            operator = null;
+                            waitForSecondOperand = true;
+                        }
+                        return;
+                    }
+                    
+                    if (['+', '-', '*', '/'].includes(buttonText)) {
+                        if (firstOperand !== null && operator && !waitForSecondOperand) {
+                            // Fix: Compute intermediate result for chained operations
+                            const secondOperand = parseFloat(currentInput);
+                            switch(operator) {
+                                case '+': firstOperand += secondOperand; break;
+                                case '-': firstOperand -= secondOperand; break;
+                                case '*': firstOperand *= secondOperand; break;
+                                case '/':
+                                    if (secondOperand === 0) {
+                                        calculatorDisplay.textContent = "Error";
+                                        resetCalculatorState();
+                                        return;
+                                    }
+                                    firstOperand /= secondOperand;
+                                    break;
+                            }
+                            calculatorDisplay.textContent = firstOperand;
+                        } else {
+                            firstOperand = parseFloat(currentInput);
+                        }
+                        operator = buttonText;
+                        waitForSecondOperand = true;
+                        return;
+                    }
+
+                    if (buttonText === '.') {
+                        if (waitForSecondOperand) {
+                            currentInput = '0.';
+                            waitForSecondOperand = false;
+                        } else if (!currentInput.includes('.')) { // Fix: Prevent multiple decimals
+                            currentInput += '.';
+                        }
+                    } else if (buttonText === '+/-') {
+                        if (currentInput === '0') { // Fix: Prevent -0
+                            currentInput = '0';
+                        } else {
+                            currentInput = (parseFloat(currentInput) * -1).toString();
+                        }
+                    } else if (buttonText === '%') {
+                        currentInput = (parseFloat(currentInput) / 100).toString();
+                    } else {
+                        if (currentInput === '0' || waitForSecondOperand) {
+                            currentInput = buttonText;
+                            waitForSecondOperand = false;
+                        } else {
+                            currentInput += buttonText;
+                        }
+                    }
+                    
+                    calculatorDisplay.textContent = currentInput;
+                });
+            });
+
+            // --- Task View and Virtual Desktops ---
+            const openWindowsBeforeTaskView = []; // To store windows to restore
+
+            taskViewButton.addEventListener('click', () => {
+                const isHidden = taskView.style.display === 'none';
+                if (isHidden) {
+                    showTaskView();
+                } else {
+                    hideTaskView();
+                }
+            });
+
+            function showTaskView() {
+                taskView.style.display = 'flex';
+                taskView.setAttribute('aria-hidden', 'false'); // Fix: Update ARIA
+                hideStartMenu();
+                hideCortanaFlyout();
+                
+                openWindowsBeforeTaskView.length = 0; // Clear the list
+                
+                document.querySelectorAll('.window').forEach(win => {
+                    if (win.style.display === 'flex') {
+                        openWindowsBeforeTaskView.push(win);
+                        win.style.display = 'none';
+                        createWindowThumbnail(win);
+                    }
+                });
+            }
+
+            function hideTaskView() {
+                taskView.style.display = 'none';
+                taskView.setAttribute('aria-hidden', 'true'); // Fix: Update ARIA
+                taskViewWindowsContainer.innerHTML = '';
+                
+                openWindowsBeforeTaskView.forEach(win => { // Fix: Restore hidden windows
+                    restoreWindow(win);
+                });
+            }
+
+            taskViewCloseBtn.addEventListener('click', hideTaskView);
+
+            function createWindowThumbnail(windowElement) {
+                const thumb = document.createElement('div');
+                thumb.classList.add('task-view-window-thumb');
+                thumb.dataset.windowId = windowElement.id;
+                
+                const title = document.createElement('div');
+                title.classList.add('window-thumb-title');
+                title.textContent = windowElement.dataset.appName;
+                
+                thumb.appendChild(title);
+                taskViewWindowsContainer.appendChild(thumb);
+                
+                thumb.addEventListener('click', () => {
+                    restoreWindow(windowElement);
+                    focusWindow(windowElement);
+                    hideTaskView();
+                });
+            }
+
+            addDesktopBtn.addEventListener('click', () => {
+                const newDesktop = document.createElement('div');
+                currentDesktopId++;
+                newDesktop.id = `desktop-${currentDesktopId}`;
+                newDesktop.classList.add('desktop', 'virtual-desktop');
+                
+                document.querySelectorAll('#desktop-1 .icon').forEach(icon => {
+                    const clonedIcon = document.createElement('div');
+                    clonedIcon.className = icon.className;
+                    clonedIcon.dataset.windowTarget = icon.dataset.windowTarget;
+                    clonedIcon.dataset.taskbarId = icon.dataset.taskbarId;
+                    clonedIcon.setAttribute('role', 'button');
+                    clonedIcon.setAttribute('tabindex', '0');
+                    clonedIcon.innerHTML = icon.innerHTML;
+                    
+                    clonedIcon.addEventListener('click', () => {
+                        const windowId = clonedIcon.dataset.windowTarget;
+                        const windowElement = document.querySelector(windowId);
+                        if (windowElement) {
+                            if (windowElement.style.display === 'flex') {
+                                focusWindow(windowElement);
+                            } else {
+                                openWindow(windowElement);
+                            }
+                        }
+                    });
+                    
+                    newDesktop.appendChild(clonedIcon);
+                });
+                
+                desktopArea.appendChild(newDesktop);
+                switchToDesktop(currentDesktopId);
+
+                // Fix: Initialize drag state for cloned windows on new desktop
+                document.querySelectorAll('.window').forEach(win => {
+                     initializeWindow(win);
+                });
+            });
+            
+            function switchToDesktop(id) {
+                document.querySelectorAll('.desktop').forEach(desktop => {
+                    desktop.classList.remove('active');
+                });
+                
+                const targetDesktop = document.getElementById(`desktop-${id}`);
+                if (targetDesktop) {
+                    targetDesktop.classList.add('active');
+                    document.querySelectorAll('.virtual-desktop').forEach(d => {
+                        d.style.display = 'none';
+                    });
+                    targetDesktop.style.display = 'grid';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
