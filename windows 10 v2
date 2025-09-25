@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+4<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -963,6 +963,7 @@
                 { id: 'doom', name: 'Doom', icon: 'https://github.com/087n7/Windows-10-Windows-XP-etc-Website-VM/blob/main/doom-logo.png?raw=true', desktop: true, taskbarPinned: true, content: '<p>Welcome to DOOM. You must find the demons.</p>' },
                 { id: 'baldis-basics', name: "Baldi's Basics", icon: 'https://raw.githubusercontent.com/ripjaw1219/baldis-basics-html5-edition/main/background.jpg', desktop: true, taskbarPinned: true, content: '<iframe src="https://github.com/ripjaw1219/baldis-basics-html5-edition/blob/main/background.jpg?raw=true" style="width:100%; height:100%; border:0;"></iframe>' },
                 { id: 'flappy-bird', name: 'Flappy Bird', icon: 'https://raw.githubusercontent.com/087n7/Windows-10-Windows-XP-etc-Website-VM/main/flappy-bird-icon.png', desktop: true, taskbarPinned: true, content: '<p>Tap to flap your way through the pipes</p>' },
+                { id: 'Youtube', name: "Youtube", icon: 'https://raw.githubusercontent.com/087n7/Windows-10-Windows-XP-etc-Website-VM/main/youtube-logo.png', desktop: true, taskbarPinned: true, content: '<iframe src="http://youtube.com" style="width:100%; height:100%; border:0;"></iframe>' },
                 { id: 'trash-bin', name: 'Trash Bin', icon: 'https://raw.githubusercontent.com/087n7/Windows-10-Windows-XP-etc-Website-VM/main/trash-bin-logo.png', desktop: true, taskbarPinned: true, content: '<p></p>' },
             ];
             
