@@ -27,7 +27,7 @@
             overflow: hidden;
             user-select: none;
             cursor: default;
-            background: #000;
+            background: #3f34;
         }
 
         /* Login Screen Styles */
